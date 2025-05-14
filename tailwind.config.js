@@ -57,7 +57,7 @@ export default {
     plugin(function ({ addBase }) {
       addBase({
         ":root": {
-          "--font-primary": '"Poppins", sans-serif',
+          "--font-primary": '"Raleway", sans-serif',
           "--font-secondary": '"Roboto", sans-serif',
           "--color-primary": "#4f46e5",
           "--color-primary-hover": "#4338ca",

@@ -1,11 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   /* =======================
      Typography
   ======================= */
-  --font-primary: "Poppins", sans-serif;
+  --font-primary: "Raleway", sans-serif;
   --font-secondary: "Roboto", sans-serif;
 
   --font-size-xs: 0.75rem;
