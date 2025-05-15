@@ -1,0 +1,104 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./src/**/*.{html,js,css, js, jsx}", "./public/index.html"],
+  theme: {
+    extend: {
+      colors: {
+        primary: "var(--color-primary)",
+        "primary-hover": "var(--color-primary-hover)",
+        secondary: "var(--color-secondary)",
+        "secondary-hover": "var(--color-secondary-hover)",
+        accent: "var(--color-accent)",
+        "accent-hover": "var(--color-accent-hover)",
+        success: "var(--color-success)",
+        "success-bg": "var(--color-success-bg)",
+        warning: "var(--color-warning)",
+        "warning-bg": "var(--color-warning-bg)",
+        error: "var(--color-error)",
+        "error-bg": "var(--color-error-bg)",
+        border: "var(--color-border)",
+        dark: "var(--color-dark)",
+        white: "var(--color-white)",
+        light: "var(--color-light)",
+        gray: "var(--color-gray)",
+      },
+      fontFamily: {
+        primary: "var(--font-primary)",
+        secondary: "var(--font-secondary)",
+      },
+      fontSize: {
+        xs: "var(--font-size-xs)",
+        sm: "var(--font-size-sm)",
+        base: "var(--font-size-base)",
+        lg: "var(--font-size-lg)",
+        xl: "var(--font-size-xl)",
+        "2xl": "var(--font-size-2xl)",
+      },
+      borderRadius: {
+        sm: "var(--radius-sm)",
+        base: "var(--radius-base)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        full: "var(--radius-full)",
+      },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+      },
+      transitionProperty: {
+        fast: "var(--transition-fast)",
+        base: "var(--transition-base)",
+        slow: "var(--transition-slow)",
+      },
+    },
+  },
+  plugins: [
+    plugin(function ({ addBase }) {
+      addBase({
+        ":root": {
+          "--font-primary": '"Raleway", sans-serif',
+          "--font-secondary": '"Roboto", sans-serif',
+          "--color-primary": "#4f46e5",
+          "--color-primary-hover": "#4338ca",
+          "--color-secondary": "#3b82f6",
+          "--color-secondary-hover": "#2563eb",
+          "--color-accent": "#f43f5e",
+          "--color-accent-hover": "#e11d48",
+          "--color-success": "#10b981",
+          "--color-success-bg": "#ecfdf5",
+          "--color-warning": "#f59e0b",
+          "--color-warning-bg": "#fffbeb",
+          "--color-error": "#ef4444",
+          "--color-error-bg": "#fef2f2",
+          "--color-border": "#e5e7eb",
+          "--color-dark": "#2e2e2e",
+          "--color-white": "#ffffff",
+          "--color-light": "#f8f9fa",
+          "--color-gray": "#d1d5db",
+
+          "--radius-sm": "4px",
+          "--radius-base": "8px",
+          "--radius-md": "12px",
+          "--radius-lg": "16px",
+          "--radius-full": "9999px",
+
+          "--shadow-sm": "0 1px 2px rgba(0, 0, 0, 0.05)",
+          "--shadow-md": "0 4px 6px rgba(0, 0, 0, 0.1)",
+          "--shadow-lg": "0 10px 15px rgba(0, 0, 0, 0.15)",
+
+          "--transition-fast": "all 150ms ease-in-out",
+          "--transition-base": "all 300ms ease",
+          "--transition-slow": "all 500ms ease",
+
+          "--font-size-xs": "0.75rem",
+          "--font-size-sm": "0.875rem",
+          "--font-size-base": "1rem",
+          "--font-size-lg": "1.125rem",
+          "--font-size-xl": "1.25rem",
+          "--font-size-2xl": "1.5rem",
+        },
+      });
+    }),
+  ],
+};
