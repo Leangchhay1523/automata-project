@@ -35,13 +35,13 @@
   --color-accent-hover: #e11d48;
 
   --color-success: #10b981;
-  --color-success-bg: #ecfdf5;
+  --color-success-bg: rgba(16, 185, 129, 0.5);
 
   --color-warning: #f59e0b;
-  --color-warning-bg: #fffbeb;
+  --color-warning-bg: rgba(245, 158, 11, 0.5);
 
   --color-error: #ef4444;
-  --color-error-bg: #fef2f2;
+  --color-error-bg: rgba(239, 68, 68, 0.5);
 
   --color-border: #e5e7eb;
 
