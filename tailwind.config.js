@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./src/**/*.{html,js,css, js, jsx}", "./public/index.html"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
     extend: {
       colors: {
-        primary: "var(--color-primary)",
+        primary: "#4f46e5",
         "primary-hover": "var(--color-primary-hover)",
         secondary: "var(--color-secondary)",
         "secondary-hover": "var(--color-secondary-hover)",
