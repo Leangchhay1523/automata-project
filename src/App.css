@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@/style/CommonComponent.css";
 
 * {
   box-sizing: border-box;
