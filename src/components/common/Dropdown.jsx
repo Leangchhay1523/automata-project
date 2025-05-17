@@ -1,0 +1,63 @@
+import React, { useState, useRef, useEffect } from "react";
+import { FaChevronDown } from "react-icons/fa";
+
+export default function DropDown({
+  selectedIcon: SelectedIcon,
+  className = "",
+  option,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState("a");
+  const [options, setOptions] = useState(option);
+  const dropdownRef = useRef(null);
+
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  const handleSelect = (option) => {
+    setSelected(option);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className={`relative ${className}`} ref={dropdownRef}>
+      <button
+        onClick={toggleDropdown}
+        className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-left flex justify-between items-center shadow-sm hover:shadow-md transition"
+      >
+        <span>{selected}</span>
+        <FaChevronDown className="text-gray-500" size={14} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10">
+          {options.map((option) => (
+            <div
+              key={option}
+              onClick={() => handleSelect(option)}
+              className={`px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100 ${
+                selected === option ? "bg-gray-100 font-medium" : ""
+              }`}
+            >
+              {selected === option && SelectedIcon && (
+                <span className="text-blue-600 mr-2">
+                  <SelectedIcon size={14} />
+                </span>
+              )}
+              {option}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
