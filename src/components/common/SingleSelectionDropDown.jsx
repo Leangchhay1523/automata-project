@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
-export default function DropDown({
+export default function SingleSelectionDropDown({
   selectedIcon: SelectedIcon,
   className = "",
   option,
@@ -32,7 +32,7 @@ export default function DropDown({
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-left flex justify-between items-center shadow-sm hover:shadow-md transition"
+        className="w-full px-4 py-2 border border-gray-300 rounded-sm bg-white text-left flex justify-between items-center shadow-sm hover:shadow-md transition"
       >
         <span>{selected}</span>
         <FaChevronDown className="text-gray-500" size={14} />
@@ -49,7 +49,7 @@ export default function DropDown({
               }`}
             >
               {selected === option && SelectedIcon && (
-                <span className="text-blue-600 mr-2">
+                <span className="text-[#2e2e2e] mr-2">
                   <SelectedIcon size={14} />
                 </span>
               )}
