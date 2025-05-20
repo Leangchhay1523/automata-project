@@ -23,8 +23,9 @@ export default {
         gray: "var(--color-gray)",
       },
       fontFamily: {
-        primary: "var(--font-primary)",
-        secondary: "var(--font-secondary)",
+        primary: ["Raleway", "sans-serif"],
+        secondary: ["Roboto", "sans-serif"],
+        exile: ["Exile", "sans-serif"],
       },
       fontSize: {
         xs: "var(--font-size-xs)",
