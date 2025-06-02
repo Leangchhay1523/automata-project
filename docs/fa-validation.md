@@ -23,7 +23,7 @@ A finite automaton is a 5-tuple (Q, Σ, q, F, δ) where:
 
 ## 2. Validation Rules
 
-Checking if an FA is a valid FA involves severa key aspects:
+Checking if an FA is a valid FA involves several key aspects:
 
 **2.1 Check Set of State (Q)**
 
