@@ -4,9 +4,15 @@ import Button from "../common/Button";
 
 // Icon
 import { RxCross2 } from "react-icons/rx";
+import { TiTick } from "react-icons/ti";
 
 // React Functions
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
+import FaTransitionsInput from "./FaTransitionsInput";
+
+// Functions
+import { processingRawTransition } from "../../logic/TransitionConverting/ConvertTransition";
 
 export default function FaFormLayout() {
   // Variables
@@ -23,10 +29,18 @@ export default function FaFormLayout() {
   const [faState, setFaState] = useState([]); // Official state of the FA
   const [stateCounter, setStateCounter] = useState(0);
   const [tempSymbol, setTempSymbol] = useState("");
-  const [faAlphabet, setFaAlphabet] = useState([]); // Official alphabet of the FA
+  const [faAlphabet, setFaAlphabet] = useState(["ε"]); // Official alphabet of the FA
   const [symbolError, setSymbolError] = useState(false);
+  const [allRawTransition, setallRawTransition] = useState([]);
+  const [faAllTransitions, setFaAllTransitions] = useState({}); // Offical transition of the FA
   // Functions
-  // General functions
+  // General functions`
+  useEffect(() => {
+    console.log("FA States: ", faState);
+  }, [faState]);
+  useEffect(() => {
+    console.log("FA Alphabet: ", faAlphabet);
+  }, [faAlphabet]);
   // Fa Name Function
   const handleFaName = (data) => {
     setFaName(data);
@@ -69,6 +83,8 @@ export default function FaFormLayout() {
       const newAlphabet = [...prev, tempSymbol];
       return [...new Set(newAlphabet)];
     });
+
+    setTempSymbol("");
   };
   const removeSymbol = (index) => {
     setFaAlphabet((prevState) => {
@@ -79,6 +95,29 @@ export default function FaFormLayout() {
   };
   const clearSymbol = () => {
     setFaAlphabet([]);
+  };
+  // Fa Transition Function
+  useEffect(() => {
+    console.log("Updated Transition Inputs: ", allRawTransition);
+  }, [allRawTransition]);
+
+  const addTransition = () => {
+    setallRawTransition((prev) => [
+      ...prev,
+      { id: Date.now(), currentState: "", inputSymbol: "", nextState: "" },
+    ]);
+  };
+
+  const handleTransitionChange = (index, field, value) => {
+    setallRawTransition((prev) => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  };
+
+  const handleRemoveTransition = (index) => {
+    setallRawTransition((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -138,6 +177,7 @@ export default function FaFormLayout() {
               className="border border-(--color-dark) w-[150px] border-solid rounded-sm px-4 py-2 h-[40px] focus:outline-none focus:ring-2 focus:ring-(--color-dark)"
               placeholder={"Enter Symbol"}
               onChange={handleSymbol}
+              value={tempSymbol}
             />
             <Button
               isPrimary={false}
@@ -165,16 +205,39 @@ export default function FaFormLayout() {
           </div>
         </div>
       </div>
+      {/* Transition  */}
       <div className="flex flex-col gap-[5px]">
         <div className="flex justify-between items-center">
           <p className={style.label}>Transitions</p>
           <Button
             isPrimary={false}
-            // onClick={addSymbol}
+            onClick={addTransition}
             content={"Add Transition"}
           />
         </div>
-        <div className="flex justify-between w-[80%]"></div>
+        <div className="flex justify-between w-full mt-[5px] rounded-t-[10px] border border-gray-400 flex-col">
+          <div className="grid px-[10px] grid-cols-[1fr_1fr_1fr_0.5fr] gap-[10px] py-[5px] border-b border-gray-400">
+            <p className="font-raleway-bold ">From State</p>
+            <p className="font-raleway-bold ">Input Symbol</p>
+            <p className="font-raleway-bold ">To State</p>
+            <p className="font-raleway-bold text-right">Remove</p>
+          </div>
+          {allRawTransition.map((t, index) => {
+            return (
+              <FaTransitionsInput
+                key={t.id}
+                index={index}
+                faState={faState}
+                faAlphabet={faAlphabet}
+                currentState={t.currentState}
+                inputSymbol={t.inputSymbol}
+                nextState={t.nextState}
+                onChange={handleTransitionChange}
+                onRemove={handleRemoveTransition}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
