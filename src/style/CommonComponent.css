@@ -2,11 +2,11 @@
 /* Button */
 /* ----------------------- */
 .btn {
-  @apply rounded-sm w-max pr-5 pl-5 pb-2.5 pt-2.5 flex gap-2 items-center;
+  @apply rounded-sm w-max px-5 py-2 h-[40px] flex gap-2 items-center;
 }
 
 .btn-hover {
-  @apply cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105;
+  @apply cursor-pointer hover:bg-gray-100;
 }
 
 .btn-primary {
@@ -14,5 +14,5 @@
 }
 
 .btn-secondary {
-  @apply border border-(--color-dark) border-solid;
+  @apply border border-gray-400 border-solid;
 }

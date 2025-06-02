@@ -4,17 +4,18 @@ import { FaChevronDown } from "react-icons/fa";
 export default function SingleSelectionDropDown({
   selectedIcon: SelectedIcon,
   className = "",
-  option,
+  option, // Array
+  setOption,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("a");
-  const [options, setOptions] = useState(option);
+  const [selected, setSelected] = useState("");
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
   const handleSelect = (option) => {
     setSelected(option);
+    setOption(option);
     setIsOpen(false);
   };
 
@@ -32,15 +33,15 @@ export default function SingleSelectionDropDown({
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="w-full px-4 py-2 border border-gray-300 rounded-sm bg-white text-left flex justify-between items-center shadow-sm hover:shadow-md transition"
+        className="w-full h-full px-4 py-2 border border-gray-300 rounded-sm bg-white cursor-pointer text-left flex justify-between items-center shadow-sm hover:shadow-sm transition"
       >
         <span>{selected}</span>
         <FaChevronDown className="text-gray-500" size={14} />
       </button>
 
       {isOpen && (
-        <div className="absolute mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10">
-          {options.map((option) => (
+        <div className="absolute mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
+          {option.map((option) => (
             <div
               key={option}
               onClick={() => handleSelect(option)}

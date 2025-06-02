@@ -1,7 +1,26 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
-@tailwind utilities;
+
+@font-face {
+  font-family: Raleway;
+  src: url("@/assets/font/Raleway-Regular.ttf");
+}
+
+@font-face {
+  font-family: Raleway-Bold;
+  src: url("@/assets/font/Raleway-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url("@/assets/font/Roboto-Regular.ttf");
+}
+
+@theme {
+  --font-raleway: Raleway, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  --font-raleway-bold: Raleway-Bold, sans-serif;
+}
 
 :root {
   /* =======================
