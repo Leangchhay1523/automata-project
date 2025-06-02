@@ -1,4 +1,9 @@
-export default function Button({ className, content, onClick, isPrimary }) {
+export default function Button({
+  className = "",
+  content,
+  onClick,
+  isPrimary,
+}) {
   return (
     <button
       className={`btn btn-hover ${className} ${

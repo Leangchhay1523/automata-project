@@ -29,7 +29,7 @@ export default function FaFormLayout() {
   const [faState, setFaState] = useState([]); // Official state of the FA
   const [stateCounter, setStateCounter] = useState(0);
   const [tempSymbol, setTempSymbol] = useState("");
-  const [faAlphabet, setFaAlphabet] = useState(["ε"]); // Official alphabet of the FA
+  const [faAlphabet, setFaAlphabet] = useState([""]); // Official alphabet of the FA
   const [symbolError, setSymbolError] = useState(false);
   const [allRawTransition, setallRawTransition] = useState([]);
   const [faAllTransitions, setFaAllTransitions] = useState({}); // Offical transition of the FA
@@ -47,21 +47,13 @@ export default function FaFormLayout() {
   };
   // Fa State Function
   const addState = () => {
-    const newState = `q${stateCounter}`;
-    setFaState((prev) => {
-      const updated = [...prev, newState];
-      return [...new Set(updated)];
-    });
-    setStateCounter((prev) => prev + 1);
+    setFaState((prev) => [...prev, `q${prev.length}`]);
   };
   const removeState = (index) => {
     setFaState((prevState) => {
-      const newState = [...prevState];
-      newState.splice(index, 1);
-
-      const newCount = newState.length;
-      setStateCounter(newCount);
-      return newState;
+      const newState = prevState.filter((_, i) => i !== index);
+      // Renaming all to q0, q1, ...
+      return newState.map((_, i) => `q${i}`);
     });
   };
   const clearState = () => {

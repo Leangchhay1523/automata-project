@@ -33,7 +33,7 @@ export default function SingleSelectionDropDown({
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="w-full h-full px-4 py-2 border border-gray-300 rounded-sm bg-white cursor-pointer text-left flex justify-between items-center shadow-xs hover:shadow-sm transition"
+        className="w-full h-full px-4 py-2 border border-gray-300 rounded-sm bg-white cursor-pointer text-left flex justify-between items-center shadow-sm hover:shadow-sm transition"
       >
         <span>{selected}</span>
         <FaChevronDown className="text-gray-500" size={14} />

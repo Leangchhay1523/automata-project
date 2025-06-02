@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-This document briefly describe how FAs (NFA/DFA) are stored in our system including the data models.
+This document briefly describes how FAs (NFA/DFA) are stored in our system including the data models.
 
 ## 2. Formal Definition of Finite Automaton
 
@@ -16,9 +16,9 @@ Every finite automaton in the system is defined by a 5-tuple (Q, Σ, q, F, δ) w
 
 | Component | Description          | Example      |
 | --------- | -------------------- | ------------ |
-| Q         | Finite set of state  | {q0, q1, q2} |
-| Σ         | Set of input symbol  | {a, b, c}    |
-| δ         | Transition functions | q0 x a -> q1 |
+| Q         | Finite set of states | {q0, q1, q2} |
+| Σ         | Set of input symbols | {a, b, c}    |
+| δ         | Transition function  | q0 x a -> q1 |
 | q         | Initial state        | q0           |
 | F         | Set of final states  | {q1, q2}     |
 

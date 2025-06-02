@@ -7,7 +7,7 @@
 
 ## 1. Overview
 
-This document describe the rules and process used to validate an input Finite Automaton (FA) in the system. This does refer to Deterministict Finite Automaton (DFA) or Non-Deterministict Finite Automaton (NFA), but refer to the general Finite Automaton (FA).
+This document describes the rules and process used to validate an input Finite Automaton (FA) in the system. This does not refer to Deterministic Finite Automaton (DFA) or Non-Deterministic Finite Automaton (NFA) specifically, but refers to the general Finite Automaton (FA).
 
 ## 2. Formal Definition of Finite Automaton
 
@@ -27,19 +27,19 @@ Checking if an FA is a valid FA involves severa key aspects:
 
 **2.1 Check Set of State (Q)**
 
-- Q has finite number of state
+- Q has a finite number of state
 - Q must be non-empty, at least one state.
 
 **2.2 Check Alphabet (Σ)**
 
-- Σ has finite number of symbol
+- Σ has a finite number of symbol
 - Σ must be non-empty, at least one symbol.
 
 **2.3 Check Transition Functions (δ)**
 
 Every transition must have:
 
-- Current start and destination state must be in Q
+- The current state and all next states defined in a transition must be members of Q.
 - All input symbols must be in Σ
 
 **2.4 Check Initial State (q0)**
