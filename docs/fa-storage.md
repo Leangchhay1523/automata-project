@@ -48,7 +48,6 @@ Example:
 
 ```json
 {
-  "type": "",
   "name": "",
   "type": "DFA",
   "states": ["q0", "q1", "q2"],

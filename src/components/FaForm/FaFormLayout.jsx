@@ -212,7 +212,7 @@ export default function FaFormLayout() {
 
   // FA Final State
   const receiveFinalState = (option) => {
-    setFaFinalState((prev) => Array.from(new Set([...prev, ...option])));
+    setFaFinalState(option);
   };
 
   useEffect(() => {
