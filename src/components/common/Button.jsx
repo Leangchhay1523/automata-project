@@ -6,9 +6,9 @@ export default function Button({
 }) {
   return (
     <button
-      className={`btn btn-hover ${className} ${
+      className={`btn ${className} ${
         isPrimary ? "btn-primary" : "btn-secondary"
-      }`}
+      } ${isPrimary ? "btn-hover-primary" : "btn-hover"}`}
       onClick={onClick}
     >
       {content}
