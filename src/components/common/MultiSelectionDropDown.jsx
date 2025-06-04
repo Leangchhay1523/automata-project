@@ -5,10 +5,10 @@ export default function MultiSelectDropdown({
   selectedIcon: SelectedIcon,
   className = "",
   option,
+  sendResult,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [options, setOptions] = useState(option);
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
@@ -22,6 +22,10 @@ export default function MultiSelectDropdown({
   };
 
   useEffect(() => {
+    sendResult(selectedOptions);
+  }, [selectedOptions]);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -32,22 +36,18 @@ export default function MultiSelectDropdown({
   }, []);
 
   return (
-    <div className={`relative ${className || ""}`} ref={dropdownRef}>
+    <div className={`relative`} ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="w-full px-4 py-2 border border-gray-300 rounded-sm bg-white text-left flex justify-between items-center shadow-sm hover:shadow-md transition"
+        className={`${className} w-full px-4 py-2 border border-gray-300 rounded-sm bg-white text-left flex justify-between items-center shadow-sm hover:shadow-md transition`}
       >
-        <span className="truncate">
-          {selectedOptions.length > 0
-            ? selectedOptions.join(", ")
-            : "Select options"}
-        </span>
+        <span className="truncate">{selectedOptions.join(", ")}</span>
         <FaChevronDown className="text-gray-500" size={14} />
       </button>
 
       {isOpen && (
         <div className="absolute mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
-          {options.map((option) => {
+          {option.map((option) => {
             const isSelected = selectedOptions.includes(option);
             return (
               <div
