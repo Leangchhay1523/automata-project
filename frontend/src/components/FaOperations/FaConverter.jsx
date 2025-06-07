@@ -3,7 +3,7 @@ import Input from "../common/Input";
 import { useState, useEffect } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
 import { TiTick } from "react-icons/ti";
-
+//TODO: Add logic for converting NFA to DFA
 export default function FaConverter() {
   const [inputError, setInputError] = useState(false);
   const [reset, setReset] = useState(false);
