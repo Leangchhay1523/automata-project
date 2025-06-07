@@ -30,6 +30,7 @@ All FAs are stored in a single JSON file in `/src/data/FaData.json`.
 
 ```json
 {
+  "id": "",
   "type": "",
   "name": "",
   "states": [...],
@@ -48,7 +49,7 @@ Example:
 
 ```json
 {
-  "name": "",
+  "name": "1",
   "type": "DFA",
   "states": ["q0", "q1", "q2"],
   "alphabet": ["a", "b"],
