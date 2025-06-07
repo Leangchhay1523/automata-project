@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: Raleway;
+  src: url("@/assets/font/Raleway-Regular.ttf");
+}
+
+@font-face {
+  font-family: Raleway-Bold;
+  src: url("@/assets/font/Raleway-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url("@/assets/font/Roboto-Regular.ttf");
+}
+
+@font-face {
+  font-family: Roboto-Bold;
+  src: url("@/assets/font/Roboto-Bold.ttf");
+}
+
+@theme {
+  --font-raleway: Raleway, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  --font-raleway-bold: Raleway-Bold, sans-serif;
+  --font-roboto-bold: Roboto-Bold, sans-serif;
+}
+
+:root {
+  /* =======================
+     Typography
+  ======================= */
+  --font-primary: "Raleway", sans-serif;
+  --font-secondary: "Roboto", sans-serif;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+
+  /* =======================
+     Color Palette
+  ======================= */
+  --color-white: #ffffff;
+  --color-dark: #2e2e2e;
+  --color-light: #f8f9fa;
+  --color-gray: #a2a2a2;
+  --color-dark-gray: #d9d9d9;
+
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+
+  --color-secondary: #3b82f6;
+  --color-secondary-hover: #2563eb;
+
+  --color-accent: #f43f5e;
+  --color-accent-hover: #e11d48;
+
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.5);
+
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.5);
+
+  --color-error: #ef4444;
+  --color-error-bg: rgba(239, 68, 68, 0.5);
+
+  --color-border: #e5e7eb;
+
+  /* =======================
+     Border
+  ======================= */
+  --border-light: 1px solid var(--color-border);
+  --border-base: 2px solid var(--color-border);
+  --border-thick: 3px solid var(--color-border);
+
+  /* =======================
+     Border Radius
+  ======================= */
+  --radius-sm: 4px;
+  --radius-5px: 5px;
+  --radius-10px: 10px;
+  --radius-base: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* =======================
+     Shadows
+  ======================= */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+
+  /* =======================
+     Transitions
+  ======================= */
+  --transition-fast: all 150ms ease-in-out;
+  --transition-base: all 300ms ease;
+  --transition-slow: all 500ms ease;
+
+  /* =======================
+     Spacing (Optional)
+  ======================= */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
