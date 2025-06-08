@@ -81,6 +81,7 @@ function refinePartitions(dfa) {
     // Replaces the old partitions array with the new one.
     partitions = newPartitions;
   }
+  
   return partitions;
 }
 
@@ -113,18 +114,23 @@ function buildMinimizedDFA(dfa, partitions) {
       stateMap[state] = groupName;
     }
 
-    // Create transitions using representative
-    newTransitions[groupName] = {};
-    for (const symbol of dfa.alphabet) {
-      const target = dfa.transitions[representative]?.[symbol]?.[0];
-      if (target && stateMap[target]) {
-        newTransitions[groupName][symbol] = [stateMap[target]];
-      }
-    }
-
     // Accept state check
     if ([...group].some(s => dfa.acceptStates.includes(s))) {
       newAcceptStates.push(groupName);
+    }
+    
+  });
+
+  partitions.forEach((group) => {
+    const representative = [...group][0]; 
+    const groupName = groupNameMap.get(group);
+    
+    newTransitions[groupName] = {};
+    for (const symbol of dfa.alphabet) {
+      const target = dfa.transitions[representative]?.[symbol]?.[0];
+      if (target !== undefined) {
+        newTransitions[groupName][symbol] = [stateMap[target]];
+      }
     }
   });
 
@@ -140,6 +146,8 @@ function buildMinimizedDFA(dfa, partitions) {
     startState: newStartState,
     acceptStates: newAcceptStates
   };
+
+  
 }
 
 const dfa = {
