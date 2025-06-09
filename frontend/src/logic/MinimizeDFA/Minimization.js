@@ -123,7 +123,8 @@ function buildMinimizedDFA(dfa, partitions) {
     }
   });
 
-  // PHASE 2: Create transitions after all states are mapped
+  // PHASE 2: Create transitions after all states are mapped\
+  
   partitions.forEach((group) => {
     const representative = [...group][0]; 
     const groupName = groupNameMap.get(group);
@@ -136,7 +137,7 @@ function buildMinimizedDFA(dfa, partitions) {
       }
     }
   });
-
+  
   const newStartState = "Q0";
 
   return {
@@ -149,30 +150,32 @@ function buildMinimizedDFA(dfa, partitions) {
     startState: newStartState,
     acceptStates: newAcceptStates
   };
+  
 }
 
 const dfa = {
-  id: "5",
-  name: "DFA_TestMinimization",
+  id: "test_merged_states",
+  name: "DFA_ToBeMinimized",
   type: "DFA",
-  states: ["q0", "q1", "q2", "q3", "q4", "q5", "q6"],
+  states: ["A", "B", "C", "D", "E", "F"],
   alphabet: ["0", "1"],
   transitions: {
-    "q0": { "0": ["q1"], "1": ["q2"] },
-    "q1": { "0": ["q1"], "1": ["q3"] },
-    "q2": { "0": ["q1"], "1": ["q3"] },
-    "q3": { "0": ["q3"], "1": ["q3"] },
-    "q4": { "0": ["q4"], "1": ["q5"] },
-    "q5": { "0": ["q5"], "1": ["q4"] },
-    "q6": { "0": ["q6"], "1": ["q6"] }
+    "A": { "0": ["B"], "1": ["C"] },
+    "B": { "0": ["B"], "1": ["D"] },
+    "C": { "0": ["B"], "1": ["D"] },
+    "D": { "0": ["E"], "1": ["F"] },
+    "E": { "0": ["E"], "1": ["F"] },
+    "F": { "0": ["F"], "1": ["F"] }
   },
-  startState: "q0",
-  acceptStates: ["q2", "q3"]
+  startState: "A",
+  acceptStates: ["E", "F"]
 };
+
+
 
 const reachableDFA = removeUnreachableStates(dfa);
 const partitions = refinePartitions(reachableDFA);
 const minimizedDFA = buildMinimizedDFA(reachableDFA, partitions);
 console.log(JSON.stringify(minimizedDFA));
-console.log("Partitions:", partitions);
+
 
