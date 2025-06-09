@@ -1,4 +1,4 @@
-//Step1: Remove Unrechable states (using BFS)
+//Step1: Remove Unreachable states (using BFS)
 function removeUnreachableStates(dfa) {
   const reachable = new Set();
   const queue = [dfa.startState];
@@ -45,9 +45,13 @@ function removeUnreachableStates(dfa) {
 // Step 2 & 3: Initialize and refine partitions
 function refinePartitions(dfa) {
   let partitions = [
-    new Set(dfa.acceptStates),
+    new Set(dfa.acceptStates),  
     new Set(dfa.states.filter(s => !dfa.acceptStates.includes(s)))
   ];
+  
+  // Filter out empty partitions
+  partitions = partitions.filter(p => p.size > 0);
+  
   // Loop will true when in each group(accept and non-accept) and each state(each state in that group) have different target state(during transition)
   let updated = true;
   while (updated) {
@@ -59,7 +63,7 @@ function refinePartitions(dfa) {
       const grouped = new Map();
 
       for (const state of group) {
-        // signature hold the target state of current state to find which partiton(accept group or not) that the target state in
+        // signature hold the target state of current state to find which partition(accept group or not) that the target state in
         const signature = dfa.alphabet.map(symbol => {
           const target = dfa.transitions[state]?.[symbol]?.[0]; // .[0] important??
           const groupIndex = partitions.findIndex(p => p.has(target));
@@ -94,9 +98,8 @@ function buildMinimizedDFA(dfa, partitions) {
   const groupNameMap = new Map();
   let stateCounter = 1; // Start from 1 (Q1, Q2, ...)
 
+  // PHASE 1: Create all state mappings and determine accept states
   partitions.forEach((group) => {
-    const representative = [...group][0]; // Pick any one state from the group to find target state(for new state)
-
     let groupName;
 
     // Check if this group contains the original start state
@@ -118,9 +121,10 @@ function buildMinimizedDFA(dfa, partitions) {
     if ([...group].some(s => dfa.acceptStates.includes(s))) {
       newAcceptStates.push(groupName);
     }
-    
   });
 
+  // PHASE 2: Create transitions after all states are mapped\
+  
   partitions.forEach((group) => {
     const representative = [...group][0]; 
     const groupName = groupNameMap.get(group);
@@ -133,7 +137,7 @@ function buildMinimizedDFA(dfa, partitions) {
       }
     }
   });
-
+  
   const newStartState = "Q0";
 
   return {
@@ -146,31 +150,32 @@ function buildMinimizedDFA(dfa, partitions) {
     startState: newStartState,
     acceptStates: newAcceptStates
   };
-
   
 }
 
 const dfa = {
-  id: "5",
-  name: "DFA_TestMinimization",
+  id: "test_merged_states",
+  name: "DFA_ToBeMinimized",
   type: "DFA",
-  states: ["q0", "q1", "q2", "q3", "q4", "q5", "q6"],
+  states: ["A", "B", "C", "D", "E", "F"],
   alphabet: ["0", "1"],
   transitions: {
-    "q0": { "0": ["q1"], "1": ["q2"] },
-    "q1": { "0": ["q1"], "1": ["q3"] },
-    "q2": { "0": ["q1"], "1": ["q3"] },
-    "q3": { "0": ["q3"], "1": ["q3"] },
-    "q4": { "0": ["q4"], "1": ["q5"] },
-    "q5": { "0": ["q5"], "1": ["q4"] },
-    "q6": { "0": ["q6"], "1": ["q6"] }
+    "A": { "0": ["B"], "1": ["C"] },
+    "B": { "0": ["B"], "1": ["D"] },
+    "C": { "0": ["B"], "1": ["D"] },
+    "D": { "0": ["E"], "1": ["F"] },
+    "E": { "0": ["E"], "1": ["F"] },
+    "F": { "0": ["F"], "1": ["F"] }
   },
-  startState: "q0",
-  acceptStates: ["q2", "q3"]
+  startState: "A",
+  acceptStates: ["E", "F"]
 };
+
 
 
 const reachableDFA = removeUnreachableStates(dfa);
 const partitions = refinePartitions(reachableDFA);
 const minimizedDFA = buildMinimizedDFA(reachableDFA, partitions);
 console.log(JSON.stringify(minimizedDFA));
+
+
