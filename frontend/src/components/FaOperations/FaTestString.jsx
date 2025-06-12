@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 
 export default function FaTestString() {
   const [inputStr, setInputStr] = useState("");
+  const [tempInputStr, setTempInputStr] = useState("");
   const [inputError, setInputError] = useState(false);
   const [normal, setNormal] = useState(true);
   const [accept, setAccept] = useState(false);
@@ -46,6 +47,7 @@ export default function FaTestString() {
     console.log("Input String:", inputStr);
 
     const result = testString(inputStr);
+    setTempInputStr(inputStr);
     if (result) {
       setAccept(true);
       setNormal(false);
@@ -77,12 +79,12 @@ export default function FaTestString() {
       )}
       {accept && (
         <div className={`${style.result} ${style.accept}`}>
-          {inputStr} is accepted
+          {tempInputStr} is accepted
         </div>
       )}
       {reject && (
         <div className={`${style.result} ${style.reject}`}>
-          {inputStr} is rejected
+          {tempInputStr} is rejected
         </div>
       )}
     </div>

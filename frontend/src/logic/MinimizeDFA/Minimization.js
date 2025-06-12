@@ -26,11 +26,11 @@ function removeUnreachableStates(dfa) {
     id: dfa.id,
     name: dfa.name,
     type: dfa.type,
-    states: dfa.states.filter(s => reachable.has(s)),
+    states: dfa.states.filter((s) => reachable.has(s)),
     alphabet: dfa.alphabet,
     transitions: {},
     startState: dfa.startState,
-    acceptStates: dfa.acceptStates.filter(s => reachable.has(s))
+    acceptStates: dfa.acceptStates.filter((s) => reachable.has(s)),
   };
 
   for (const state of cleanedDFA.states) {
@@ -45,13 +45,13 @@ function removeUnreachableStates(dfa) {
 // Step 2 & 3: Initialize and refine partitions
 function refinePartitions(dfa) {
   let partitions = [
-    new Set(dfa.acceptStates),  
-    new Set(dfa.states.filter(s => !dfa.acceptStates.includes(s)))
+    new Set(dfa.acceptStates),
+    new Set(dfa.states.filter((s) => !dfa.acceptStates.includes(s))),
   ];
-  
+
   // Filter out empty partitions
-  partitions = partitions.filter(p => p.size > 0);
-  
+  partitions = partitions.filter((p) => p.size > 0);
+
   // Loop will true when in each group(accept and non-accept) and each state(each state in that group) have different target state(during transition)
   let updated = true;
   while (updated) {
@@ -64,11 +64,13 @@ function refinePartitions(dfa) {
 
       for (const state of group) {
         // signature hold the target state of current state to find which partition(accept group or not) that the target state in
-        const signature = dfa.alphabet.map(symbol => {
-          const target = dfa.transitions[state]?.[symbol]?.[0]; // .[0] important??
-          const groupIndex = partitions.findIndex(p => p.has(target));
-          return groupIndex;
-        }).join(',');
+        const signature = dfa.alphabet
+          .map((symbol) => {
+            const target = dfa.transitions[state]?.[symbol]?.[0]; // .[0] important??
+            const groupIndex = partitions.findIndex((p) => p.has(target));
+            return groupIndex;
+          })
+          .join(",");
 
         if (!grouped.has(signature)) {
           grouped.set(signature, new Set()); //Prepares a Set to collect all states with this transition behavior.
@@ -85,7 +87,7 @@ function refinePartitions(dfa) {
     // Replaces the old partitions array with the new one.
     partitions = newPartitions;
   }
-  
+
   return partitions;
 }
 
@@ -109,26 +111,26 @@ function buildMinimizedDFA(dfa, partitions) {
       groupName = `Q${stateCounter++}`;
     }
 
-    groupNameMap.set(group, groupName); 
+    groupNameMap.set(group, groupName);
     newStates.push(groupName);
 
-    // Map each original state to the new group name prepare for finding newtransition 
+    // Map each original state to the new group name prepare for finding newtransition
     for (const state of group) {
       stateMap[state] = groupName;
     }
 
     // Accept state check
-    if ([...group].some(s => dfa.acceptStates.includes(s))) {
+    if ([...group].some((s) => dfa.acceptStates.includes(s))) {
       newAcceptStates.push(groupName);
     }
   });
 
   // PHASE 2: Create transitions after all states are mapped\
-  
+
   partitions.forEach((group) => {
-    const representative = [...group][0]; 
+    const representative = [...group][0];
     const groupName = groupNameMap.get(group);
-    
+
     newTransitions[groupName] = {};
     for (const symbol of dfa.alphabet) {
       const target = dfa.transitions[representative]?.[symbol]?.[0];
@@ -137,7 +139,7 @@ function buildMinimizedDFA(dfa, partitions) {
       }
     }
   });
-  
+
   const newStartState = "Q0";
 
   return {
@@ -148,10 +150,11 @@ function buildMinimizedDFA(dfa, partitions) {
     alphabet: dfa.alphabet,
     transitions: newTransitions,
     startState: newStartState,
-    acceptStates: newAcceptStates
+    acceptStates: newAcceptStates,
   };
-  
 }
+
+("Q1 (q0, q1)");
 
 const dfa = {
   id: "test_merged_states",
@@ -160,22 +163,21 @@ const dfa = {
   states: ["A", "B", "C", "D", "E", "F"],
   alphabet: ["0", "1"],
   transitions: {
-    "A": { "0": ["B"], "1": ["C"] },
-    "B": { "0": ["B"], "1": ["D"] },
-    "C": { "0": ["B"], "1": ["D"] },
-    "D": { "0": ["E"], "1": ["F"] },
-    "E": { "0": ["E"], "1": ["F"] },
-    "F": { "0": ["F"], "1": ["F"] }
+    A: { 0: ["B"], 1: ["C"] },
+    B: { 0: ["B"], 1: ["D"] },
+    C: { 0: ["B"], 1: ["D"] },
+    D: { 0: ["E"], 1: ["F"] },
+    E: { 0: ["E"], 1: ["F"] },
+    F: { 0: ["F"], 1: ["F"] },
   },
   startState: "A",
-  acceptStates: ["E", "F"]
+  acceptStates: ["E", "F"],
 };
-
-
 
 const reachableDFA = removeUnreachableStates(dfa);
 const partitions = refinePartitions(reachableDFA);
 const minimizedDFA = buildMinimizedDFA(reachableDFA, partitions);
 console.log(JSON.stringify(minimizedDFA));
-
-
+// console.log(JSON.stringify(refinePartitions(dfa), null, 2));
+// console.log(partitions);
+console.log("A (q1, q2)"[0]);
