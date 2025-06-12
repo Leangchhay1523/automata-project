@@ -1,22 +1,21 @@
-const processingRawTransition = (rawTransition, symbols) => {
+const processingRawTransition = (rawTransition, symbols, states) => {
   const structureTransition = {};
 
-  for (const { currentState, inputSymbol, nextState } of rawTransition) {
-    if (!structureTransition[currentState]) {
-      structureTransition[currentState] = {};
+  // Initialize every state with all symbols as empty arrays
+  for (const state of states) {
+    structureTransition[state] = {};
+    for (const symbol of symbols) {
+      structureTransition[state][symbol] = [];
     }
-    if (!structureTransition[currentState][inputSymbol]) {
-      structureTransition[currentState][inputSymbol] = [];
-    }
-    structureTransition[currentState][inputSymbol].push(nextState);
   }
 
-  // Ensure every state has all symbols as keys
-  for (const state in structureTransition) {
-    for (const symbol of symbols) {
-      if (!structureTransition[state][symbol]) {
-        structureTransition[state][symbol] = [];
-      }
+  // Fill in actual transitions
+  for (const { currentState, inputSymbol, nextState } of rawTransition) {
+    if (
+      structureTransition[currentState] &&
+      structureTransition[currentState][inputSymbol]
+    ) {
+      structureTransition[currentState][inputSymbol].push(nextState);
     }
   }
 

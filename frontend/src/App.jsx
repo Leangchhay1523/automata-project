@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div className="bg-gray-50 w-full flex flex-col justify-center items-center min-h-screen p-4 gap-4">
-      <h1 className="text-3xl font-bold text-center mb-8 bg-gray">
+      <h1 className="text-3xl font-bold text-center bg-gray">
         Finite Automata Analyzer
       </h1>
 
