@@ -67,8 +67,8 @@ function refinePartitions(dfa) {
         const signature = dfa.alphabet
           .map((symbol) => {
             const target = dfa.transitions[state]?.[symbol]?.[0]; // .[0] important??
-            const groupIndex = partitions.findIndex((p) => p.has(target));
-            return groupIndex;
+            return partitions.findIndex((p) => p.has(target));
+
           })
           .join(",");
 
