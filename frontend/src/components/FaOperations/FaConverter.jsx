@@ -8,6 +8,7 @@ export default function FaConverter() {
   const [inputError, setInputError] = useState(false);
   const [reset, setReset] = useState(false);
   const [selectedNFA, setSelectedNFA] = useState(""); // NFA ID
+  const [showResult, setShowResult] = useState(false);
 
   const style = {
     error: "text-red-500 font-semibold",
@@ -51,6 +52,19 @@ export default function FaConverter() {
         isPrimary={true}
         onClick={handleSubmit}
       />
+      {showResult && (
+        <div className="flex flex-col gap-3">
+          <p className="font-raleway-bold w-full text-[20px]">Result</p>
+          <div>
+            <p>Original DFA</p>
+            <Table fa={fa} />
+          </div>
+          <div>
+            <p>Minimized DFA</p>
+            <Table fa={fa} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

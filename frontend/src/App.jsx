@@ -3,6 +3,8 @@ import "./App.css";
 import FaFormLayout from "./components/FaForm/FaFormLayout";
 import FAHistoryLayout from "./components/FaHistory/FaHistoryLayout.jsx";
 import FaOperationsLayout from "./components/FaOperations/FaOperationsLayout.jsx";
+import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 function App() {
   const dummyData = [
