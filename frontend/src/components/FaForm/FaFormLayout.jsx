@@ -10,15 +10,18 @@ import { TiTick } from "react-icons/ti";
 import { useState, useEffect } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
 import FaTransitionsInput from "./FaTransitionsInput";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Functions
 import { processingRawTransition } from "../../logic/TransitionConverting/ConvertTransition";
 import MultiSelectDropdown from "../common/MultiSelectionDropDown";
+import { checkFAType } from "../../logic/CheckFAtype/DFA-NFA";
 
 export default function FaFormLayout() {
   // Variables
   const style = {
-    form: "p-2 sm:p-4 border border-(--color-gray) rounded-lg w-full max-w-[95vw] sm:max-w-[90vw] lg:max-w-8/10 flex flex-col gap-4 sm:gap-5",
+    form: "p-2 sm:p-4 border border-(--color-gray) rounded-lg w-full flex flex-col gap-4 sm:gap-5",
     formTitle: "font-raleway-bold text-xl sm:text-2xl font-bold",
     formSubtitle: "font-roboto text-(--color-gray) text-sm sm:text-base",
     label: "font-roboto text-sm sm:text-base md:text-lg",
@@ -27,7 +30,7 @@ export default function FaFormLayout() {
     error: "text-red-500 font-semibold",
   };
   // States
-  const [fa, setFa] = useState({});
+  const [allFa, setAllFa] = useState({}); //TODO: Fetch from API and store to this state
   const [faName, setFaName] = useState(""); // Official name of the FA
   const [faState, setFaState] = useState([]); // Official state of the FA
   const [tempSymbol, setTempSymbol] = useState("");
@@ -38,6 +41,7 @@ export default function FaFormLayout() {
   const [faStartState, setFaStartState] = useState("");
   const [faFinalState, setFaFinalState] = useState([]);
   const [reset, setReset] = useState(false);
+  const [formIsOpen, setFormIsOpen] = useState(false);
   // Error States
   const [checkName, setCheckName] = useState(false);
   const [checkState, setCheckState] = useState(false);
@@ -46,6 +50,7 @@ export default function FaFormLayout() {
   const [checkStartState, setCheckStartState] = useState(false);
   const [checkFinalState, setCheckFinalState] = useState(false);
   // Functions
+
   const resetFa = () => {
     setFaName("");
     setFaState([]);
@@ -62,6 +67,15 @@ export default function FaFormLayout() {
     setCheckTransition(false);
     setCheckStartState(false);
     setCheckFinalState(false);
+  };
+
+  const toggleForm = () => {
+    setFormIsOpen((prev) => !prev);
+  };
+
+  const clearInput = () => {
+    resetFa();
+    setReset(true);
   };
 
   const validateTransition = () => {
@@ -119,6 +133,10 @@ export default function FaFormLayout() {
     return isValid;
   };
 
+  const errorToast = () => {
+    toast.error("FA Creation Failed.");
+  };
+
   const handleSubmit = () => {
     if (!validateFa()) {
       console.log("Invalid FA");
@@ -130,20 +148,42 @@ export default function FaFormLayout() {
 
     console.log("Raw Transition: ", allRawTransition);
 
-    const processed = processingRawTransition(allRawTransition, faAlphabet);
+    try {
+      var processed = processingRawTransition(
+        allRawTransition,
+        faAlphabet,
+        faState
+      );
+    } catch (error) {
+      console.error("Error processing transitions: ", error);
+      errorToast();
+      return;
+    }
+
     console.log("Processed Transition: ", processed);
     setFaAllTransitions(processed);
 
     console.log("Wrapping FA");
-    const newFa = {
+    let newFa = {
       type: "",
       name: faName,
       states: faState,
       alphabet: faAlphabet,
-      transitions: faAllTransitions,
+      transitions: processed,
       startState: faStartState,
       acceptStates: faFinalState,
     };
+
+    try {
+      var faType = checkFAType(newFa);
+    } catch (error) {
+      console.error("Error checking FA type: ", error);
+      errorToast();
+      return;
+    }
+
+    newFa.type = faType;
+    toast.success(`FA created successfully as a ${faType}!`);
     console.log(newFa);
 
     resetFa();
@@ -249,179 +289,205 @@ export default function FaFormLayout() {
   }, [faFinalState]);
 
   return (
-    <div className={style.form}>
-      <div>
-        <h1 className={style.formTitle}>Create New Finite Automaton</h1>
-        <p className={style.formSubtitle}>
-          Define the components of your finite automaton
-        </p>
-      </div>
-      <div>
-        <div className="flex flex-col sm:flex-row sm:gap-4 items-start sm:items-center">
-          <p className={style.label}>FA Name</p>
-          {checkName && <p className={style.error}>FA name is required</p>}
-        </div>
-        <Input
-          placeholder={"Enter a name for your FA"}
-          width={"w-full"}
-          onChange={handleFaName}
-          value={faName}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-          <div className="flex flex-col sm:flex-row sm:gap-4">
-            <p className={style.label}>States</p>
-            {checkState && (
-              <p className={style.error}>At least one state is required</p>
-            )}
-          </div>
-          <div className="flex gap-2 sm:gap-3 mt-2 sm:mt-0">
+    <div className="w-full max-w-[95vw] sm:max-w-[90vw] lg:max-w-8/10 flex flex-col gap-4 sm:gap-5 justify-center items-center">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="light"
+      />
+      <Button content="Create an FA" isPrimary={true} onClick={toggleForm} />
+      {formIsOpen && (
+        <div className={style.form}>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className={style.formTitle}>Create New Finite Automaton</h1>
+              <p className={style.formSubtitle}>
+                Define the components of your finite automaton
+              </p>
+            </div>
             <Button
+              content={"Clear All"}
               isPrimary={false}
-              onClick={clearState}
-              content={"Clear States"}
-            />
-            <Button
-              isPrimary={false}
-              onClick={addState}
-              content={"Add State"}
+              onClick={clearInput}
             />
           </div>
-        </div>
-        <div className="flex justify-start w-full sm:w-[80%]">
-          <div className="flex gap-2 sm:gap-3 flex-wrap">
-            {faState.map((state, index) => (
-              <div key={index} className={style.state}>
-                <span>{state}</span>
-                <RxCross2
-                  className="cursor-pointer"
-                  onClick={() => removeState(index)}
+          <div>
+            <div className="flex flex-col sm:flex-row sm:gap-4 items-start sm:items-center">
+              <p className={style.label}>FA Name</p>
+              {checkName && <p className={style.error}>FA name is required</p>}
+            </div>
+            <Input
+              placeholder={"Enter a name for your FA"}
+              width={"w-full"}
+              onChange={handleFaName}
+              value={faName}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <div className="flex flex-col sm:flex-row sm:gap-4">
+                <p className={style.label}>States</p>
+                {checkState && (
+                  <p className={style.error}>At least one state is required</p>
+                )}
+              </div>
+              <div className="flex gap-2 sm:gap-3 mt-2 sm:mt-0">
+                <Button
+                  isPrimary={false}
+                  onClick={clearState}
+                  content={"Clear States"}
+                />
+                <Button
+                  isPrimary={false}
+                  onClick={addState}
+                  content={"Add State"}
                 />
               </div>
-            ))}
+            </div>
+            <div className="flex justify-start w-full sm:w-[80%]">
+              <div className="flex gap-2 sm:gap-3 flex-wrap">
+                {faState.map((state, index) => (
+                  <div key={index} className={style.state}>
+                    <span>{state}</span>
+                    <RxCross2
+                      className="cursor-pointer"
+                      onClick={() => removeState(index)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-          <div className="flex flex-col sm:flex-row sm:gap-4">
-            <p className={style.label}>Alphabets</p>
-            {checkAlphabet && (
-              <p className={style.error}>At least one symbol is required</p>
-            )}
-          </div>
-          {symbolError && <p className={style.error}>Invalid Symbol</p>}
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center mt-2 sm:mt-0">
-            <input
-              className="border border-(--color-dark) w-full sm:w-36 rounded-sm px-3 py-1.5 h-9 sm:h-10 focus:outline-none focus:ring-2 focus:ring-(-color--dark)"
-              placeholder={"Enter Symbol"}
-              onChange={handleSymbol}
-              value={tempSymbol}
-            />
-            <Button
-              isPrimary={false}
-              onClick={clearSymbol}
-              content={"Clear Symbols"}
-            />
-            <Button
-              isPrimary={false}
-              onClick={addSymbol}
-              content={"Add Symbol"}
-            />
-          </div>
-        </div>
-        <div className="flex justify-start w-full sm:w-[80%]">
-          <div className="flex gap-2 sm:gap-3 flex-wrap">
-            {faAlphabet.map((symbol, index) => (
-              <div key={index} className={style.state}>
-                <span>{symbol}</span>
-                <RxCross2
-                  className="cursor-pointer"
-                  onClick={() => removeSymbol(index)}
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <div className="flex flex-col sm:flex-row sm:gap-4">
+                <p className={style.label}>Alphabets</p>
+                {checkAlphabet && (
+                  <p className={style.error}>At least one symbol is required</p>
+                )}
+              </div>
+              {symbolError && <p className={style.error}>Invalid Symbol</p>}
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center mt-2 sm:mt-0">
+                <input
+                  className="border border-(--color-dark) w-full sm:w-36 rounded-sm px-3 py-1.5 h-9 sm:h-10 focus:outline-none focus:ring-2 focus:ring-(-color--dark)"
+                  placeholder={"Enter Symbol"}
+                  onChange={handleSymbol}
+                  value={tempSymbol}
+                />
+                <Button
+                  isPrimary={false}
+                  onClick={clearSymbol}
+                  content={"Clear Symbols"}
+                />
+                <Button
+                  isPrimary={false}
+                  onClick={addSymbol}
+                  content={"Add Symbol"}
                 />
               </div>
-            ))}
+            </div>
+            <div className="flex justify-start w-full sm:w-[80%]">
+              <div className="flex gap-2 sm:gap-3 flex-wrap">
+                {faAlphabet.map((symbol, index) => (
+                  <div key={index} className={style.state}>
+                    <span>{symbol}</span>
+                    <RxCross2
+                      className="cursor-pointer"
+                      onClick={() => removeSymbol(index)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      {/* Transition */}
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
-          <div className="flex flex-col sm:flex-row sm:gap-4">
-            <p className={style.label}>Transitions</p>
-            {checkTransition && (
-              <p className={style.error}>Transition function is missing</p>
-            )}
+          {/* Transition */}
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+              <div className="flex flex-col sm:flex-row sm:gap-4">
+                <p className={style.label}>Transitions</p>
+                {checkTransition && (
+                  <p className={style.error}>Transition function is missing</p>
+                )}
+              </div>
+              <Button
+                isPrimary={false}
+                onClick={addTransition}
+                content={"Add Transition"}
+              />
+            </div>
+            <div className=" flex justify-between w-full mt-[5px] rounded-sm border border-gray-400 flex-col">
+              <div className="grid px-[10px] grid-cols-[1fr_1fr_1fr_0.5fr] gap-[10px] py-[10px] border-b border-gray-400">
+                <p className="font-raleway-bold ">From State</p>
+                <p className="font-raleway-bold ">Symbol</p>
+                <p className="font-raleway-bold ">To State</p>
+                <p className="font-raleway-bold text-right">Remove</p>
+              </div>
+              {allRawTransition.map((t, index) => {
+                return (
+                  <FaTransitionsInput
+                    key={t.id}
+                    index={index}
+                    faState={faState}
+                    faAlphabet={faAlphabet}
+                    currentState={t.currentState}
+                    inputSymbol={t.inputSymbol}
+                    nextState={t.nextState}
+                    onChange={handleTransitionChange}
+                    onRemove={handleRemoveTransition}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          {/* Start State */}
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row sm:gap-4">
+              <p className={style.label}>Start State</p>
+              {checkStartState && (
+                <p className={style.error}>Start state is required</p>
+              )}
+            </div>
+            <SingleSelectionDropDown
+              selectedIcon={TiTick}
+              option={faState}
+              className="h-9 sm:h-10"
+              setOption={receiveStartState}
+              reset={reset}
+            />
+          </div>
+          {/* Final State */}
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-col sm:flex-row sm:gap-4">
+              <p className={style.label}>Final State</p>
+              {checkFinalState && (
+                <p className={style.error}>
+                  At least one final state is required
+                </p>
+              )}
+            </div>
+            <MultiSelectDropdown
+              selectedIcon={TiTick}
+              option={faState}
+              className="h-9 sm:h-10"
+              sendResult={receiveFinalState}
+              reset={reset}
+            />
           </div>
           <Button
-            isPrimary={false}
-            onClick={addTransition}
-            content={"Add Transition"}
+            onClick={handleSubmit}
+            content={"Create FA"}
+            isPrimary={true}
+            className="self-end mt-2"
           />
         </div>
-        <div className=" flex justify-between w-full mt-[5px] rounded-[10px] border border-gray-400 flex-col">
-          <div className="grid px-[10px] grid-cols-[1fr_1fr_1fr_0.5fr] rounded-[10px] gap-[10px] py-[5px] border-b border-gray-400">
-            <p className="font-raleway-bold ">From State</p>
-            <p className="font-raleway-bold ">Input Symbol</p>
-            <p className="font-raleway-bold ">To State</p>
-            <p className="font-raleway-bold text-right">Remove</p>
-          </div>
-          {allRawTransition.map((t, index) => {
-            return (
-              <FaTransitionsInput
-                key={t.id}
-                index={index}
-                faState={faState}
-                faAlphabet={faAlphabet}
-                currentState={t.currentState}
-                inputSymbol={t.inputSymbol}
-                nextState={t.nextState}
-                onChange={handleTransitionChange}
-                onRemove={handleRemoveTransition}
-              />
-            );
-          })}
-        </div>
-      </div>
-      {/* Start State */}
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col sm:flex-row sm:gap-4">
-          <p className={style.label}>Start State</p>
-          {checkStartState && (
-            <p className={style.error}>Start state is required</p>
-          )}
-        </div>
-        <SingleSelectionDropDown
-          selectedIcon={TiTick}
-          option={faState}
-          className="h-9 sm:h-10"
-          setOption={receiveStartState}
-          reset={reset}
-        />
-      </div>
-      {/* Final State */}
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col sm:flex-row sm:gap-4">
-          <p className={style.label}>Final State</p>
-          {checkFinalState && (
-            <p className={style.error}>At least one final state is required</p>
-          )}
-        </div>
-        <MultiSelectDropdown
-          selectedIcon={TiTick}
-          option={faState}
-          className="h-9 sm:h-10"
-          sendResult={receiveFinalState}
-          reset={reset}
-        />
-      </div>
-      <Button
-        onClick={handleSubmit}
-        content={"Create FA"}
-        isPrimary={true}
-        className="self-end mt-2"
-      />
+      )}
     </div>
   );
 }

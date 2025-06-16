@@ -3,16 +3,18 @@ import Input from "../common/Input";
 import { useState, useEffect } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
 import { TiTick } from "react-icons/ti";
+import Table from "../common/Table";
 
 export default function FaMinimizer() {
   const [inputError, setInputError] = useState(false);
   const [reset, setReset] = useState(false);
   const [selectedDFA, setSelectedDFA] = useState(""); // NFA ID
+  const [showResult, setShowResult] = useState(false);
 
   const style = {
     error: "text-red-500 font-semibold",
   };
-
+  //TODO: Needed - Selected DFA and Result from Server
   //TODO: Fetch DFA from server
   const DFA = [
     { id: "1", name: "NFA 1" },
@@ -28,6 +30,21 @@ export default function FaMinimizer() {
       setInputError(true);
       return;
     }
+  };
+
+  const fa = {
+    id: "",
+    type: "",
+    name: "",
+    states: ["q0", "q1", "q2"],
+    alphabet: ["a", "b", "c"],
+    transitions: {
+      q0: { a: ["q1"], b: ["q2"] },
+      q1: { a: ["q0"], b: ["q2"] },
+      q2: { a: ["q2"], b: ["q1"] },
+    },
+    startState: "q0",
+    acceptStates: ["q2"],
   };
 
   return (
@@ -51,6 +68,19 @@ export default function FaMinimizer() {
         isPrimary={true}
         onClick={handleSubmit}
       />
+      {showResult && (
+        <div className="flex flex-col gap-3">
+          <p className="font-raleway-bold w-full text-[20px]">Result</p>
+          <div>
+            <p>Original DFA</p>
+            <Table fa={fa} />
+          </div>
+          <div>
+            <p>Minimized DFA</p>
+            <Table fa={fa} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
