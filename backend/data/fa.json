@@ -1,0 +1,118 @@
+[
+  {
+    "id": "AJIA8WX",
+    "type": "DFA",
+    "convert": false,
+    "minimize": true,
+    "states": ["q0", "q1", "q2"],
+    "alphabet": ["0", "1"],
+    "transitions": {
+      "q0": {
+        "0": "q1",
+        "1": "q2"
+      },
+      "q1": {
+        "0": "q1",
+        "1": "q1"
+      },
+      "q2": {
+        "0": "q2",
+        "1": "q2"
+      }
+    },
+    "startState": "q0",
+    "acceptStates": ["q1", "q2"]
+  },
+  {
+    "id": "APHR5GK",
+    "type": "NFA",
+    "convert": false,
+    "minimize": true,
+    "states": ["s0", "s1"],
+    "alphabet": ["b", "a"],
+    "transitions": {
+      "s0": {
+        "b": [],
+        "a": ["s1", "s0"]
+      },
+      "s1": {
+        "b": ["s1", "s0"],
+        "a": ["s0", "s1"]
+      }
+    },
+    "startState": "s0",
+    "acceptStates": ["s0", "s1"]
+  },
+  {
+    "id": "A5DLBJE",
+    "type": "DFA",
+    "convert": false,
+    "minimize": true,
+    "states": ["s0", "s1", "s2"],
+    "alphabet": ["a", "b"],
+    "transitions": {
+      "s0": {
+        "a": ["s1"],
+        "b": ["s1"]
+      },
+      "s1": {
+        "a": ["s0"],
+        "b": ["s2"]
+      },
+      "s2": {
+        "a": ["s2"],
+        "b": ["s0"]
+      }
+    },
+    "startState": "s0",
+    "acceptStates": ["s1"]
+  },
+  {
+    "id": "ACNLWEO",
+    "type": "NFA",
+    "convert": true,
+    "minimize": true,
+    "states": ["s0", "s1"],
+    "alphabet": ["0", "1"],
+    "transitions": {
+      "s0": {
+        "0": ["s1"],
+        "1": []
+      },
+      "s1": {
+        "0": ["s1", "s0"],
+        "1": []
+      }
+    },
+    "startState": "s0",
+    "acceptStates": ["s1", "s0"]
+  },
+  {
+    "id": "ACL5LY3",
+    "type": "NFA",
+    "convert": true,
+    "minimize": true,
+    "states": ["s0", "s1", "s2", "s3"],
+    "alphabet": ["a", "1"],
+    "transitions": {
+      "s0": {
+        "1": ["s1", "s2", "s0", "s3"],
+        "a": []
+      },
+      "s1": {
+        "1": ["s2", "s3"],
+        "a": ["s2", "s0", "s1"]
+      },
+      "s2": {
+        "1": ["s2"],
+        "a": ["s3", "s1", "s2", "s0"]
+      },
+      "s3": {
+        "1": ["s3", "s2", "s1"],
+        "a": ["s1", "s2", "s3"]
+      }
+    },
+    "startState": "s0",
+    "acceptStates": ["s1", "s0", "s3"]
+  }
+]
