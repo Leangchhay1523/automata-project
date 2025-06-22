@@ -1,0 +1,109 @@
+[
+  {
+    "minimized_id": "MJIA8WX",
+    "name": "undefined_Minimized",
+    "minimizedFrom": "DJIA8WX",
+    "convert": false,
+    "minimize": true,
+    "type": "DFA",
+    "states": ["Q1", "Q0"],
+    "alphabet": ["0", "1"],
+    "transitions": {
+      "Q1": {
+        "0": "Q1",
+        "1": "Q1"
+      },
+      "Q0": {
+        "0": "Q1",
+        "1": "Q1"
+      }
+    },
+    "startState": "Q0",
+    "acceptStates": ["Q1"]
+  },
+  {
+    "minimized_id": "MPHR5GK",
+    "name": "undefined_Minimized",
+    "minimizedFrom": "DPHR5GK",
+    "convert": false,
+    "minimize": true,
+    "type": "DFA",
+    "states": ["Q0", "Q1"],
+    "alphabet": ["b", "a"],
+    "transitions": {
+      "Q0": {
+        "a": "Q1"
+      },
+      "Q1": {
+        "b": "Q1",
+        "a": "Q1"
+      }
+    },
+    "startState": "Q0",
+    "acceptStates": ["Q0", "Q1"]
+  },
+  {
+    "minimized_id": "M5DLBJE",
+    "name": "undefined_Minimized",
+    "minimizedFrom": "D5DLBJE",
+    "convert": false,
+    "minimize": true,
+    "type": "DFA",
+    "states": ["Q1", "Q0", "Q2"],
+    "alphabet": ["a", "b"],
+    "transitions": {
+      "Q1": {
+        "a": "Q0",
+        "b": "Q2"
+      },
+      "Q0": {
+        "a": "Q1",
+        "b": "Q1"
+      },
+      "Q2": {
+        "a": "Q2",
+        "b": "Q0"
+      }
+    },
+    "startState": "Q0",
+    "acceptStates": ["Q1"]
+  },
+  {
+    "minimized_id": "MCNLWEO",
+    "name": "undefined_Minimized",
+    "minimizedFrom": "DCNLWEO",
+    "convert": true,
+    "minimize": true,
+    "type": "DFA",
+    "states": ["Q0"],
+    "alphabet": ["0", "1"],
+    "transitions": {
+      "Q0": {
+        "0": "Q0"
+      }
+    },
+    "startState": "Q0",
+    "acceptStates": ["Q0"]
+  },
+  {
+    "minimized_id": "MCL5LY3",
+    "name": "undefined_Minimized",
+    "minimizedFrom": "DCL5LY3",
+    "convert": true,
+    "minimize": true,
+    "type": "DFA",
+    "states": ["Q0", "Q1"],
+    "alphabet": ["a", "1"],
+    "transitions": {
+      "Q0": {
+        "1": "Q1"
+      },
+      "Q1": {
+        "1": "Q1",
+        "a": "Q1"
+      }
+    },
+    "startState": "Q0",
+    "acceptStates": ["Q0", "Q1"]
+  }
+]
