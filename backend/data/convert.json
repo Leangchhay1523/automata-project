@@ -3,8 +3,15 @@
     "id": "DJIA8WX",
     "convertedFrom": "AJIA8WX",
     "convert": false,
-    "states": ["q0", "q1", "q2"],
-    "alphabet": ["0", "1"],
+    "states": [
+      "q0",
+      "q1",
+      "q2"
+    ],
+    "alphabet": [
+      "0",
+      "1"
+    ],
     "transitions": {
       "q0": {
         "0": "q1",
@@ -20,90 +27,191 @@
       }
     },
     "startState": "q0",
-    "acceptStates": ["q1", "q2"],
+    "acceptStates": [
+      "q1",
+      "q2"
+    ],
     "type": "DFA"
   },
   {
     "id": "DPHR5GK",
     "convertedFrom": "APHR5GK",
     "convert": true,
-    "states": ["s0", "s0_s1"],
-    "alphabet": ["b", "a"],
+    "states": [
+      "s0",
+      "s0_s1"
+    ],
+    "alphabet": [
+      "b",
+      "a"
+    ],
     "transitions": {
       "s0": {
-        "a": ["s0_s1"]
+        "a": [
+          "s0_s1"
+        ]
       },
       "s0_s1": {
-        "b": ["s0_s1"],
-        "a": ["s0_s1"]
+        "b": [
+          "s0_s1"
+        ],
+        "a": [
+          "s0_s1"
+        ]
       }
     },
     "startState": "s0",
-    "acceptStates": ["s0", "s0_s1"],
+    "acceptStates": [
+      "s0",
+      "s0_s1"
+    ],
     "type": "DFA"
   },
   {
     "id": "D5DLBJE",
     "convertedFrom": "A5DLBJE",
     "convert": false,
-    "states": ["s0", "s1", "s2"],
-    "alphabet": ["a", "b"],
+    "states": [
+      "s0",
+      "s1",
+      "s2"
+    ],
+    "alphabet": [
+      "a",
+      "b"
+    ],
     "transitions": {
       "s0": {
-        "a": ["s1"],
-        "b": ["s1"]
+        "a": [
+          "s1"
+        ],
+        "b": [
+          "s1"
+        ]
       },
       "s1": {
-        "a": ["s0"],
-        "b": ["s2"]
+        "a": [
+          "s0"
+        ],
+        "b": [
+          "s2"
+        ]
       },
       "s2": {
-        "a": ["s2"],
-        "b": ["s0"]
+        "a": [
+          "s2"
+        ],
+        "b": [
+          "s0"
+        ]
       }
     },
     "startState": "s0",
-    "acceptStates": ["s1"],
+    "acceptStates": [
+      "s1"
+    ],
     "type": "DFA"
   },
   {
     "id": "DCNLWEO",
     "convertedFrom": "ACNLWEO",
     "convert": true,
-    "states": ["s0", "s1", "s0_s1"],
-    "alphabet": ["0", "1"],
+    "states": [
+      "s0",
+      "s1",
+      "s0_s1"
+    ],
+    "alphabet": [
+      "0",
+      "1"
+    ],
     "transitions": {
       "s0": {
-        "0": ["s1"]
+        "0": [
+          "s1"
+        ]
       },
       "s1": {
-        "0": ["s0_s1"]
+        "0": [
+          "s0_s1"
+        ]
       },
       "s0_s1": {
-        "0": ["s0_s1"]
+        "0": [
+          "s0_s1"
+        ]
       }
     },
     "startState": "s0",
-    "acceptStates": ["s0", "s1", "s0_s1"],
+    "acceptStates": [
+      "s0",
+      "s1",
+      "s0_s1"
+    ],
     "type": "DFA"
   },
   {
     "id": "DCL5LY3",
     "convertedFrom": "ACL5LY3",
     "convert": true,
-    "states": ["s0", "s0_s1_s2_s3"],
-    "alphabet": ["a", "1"],
+    "states": [
+      "s0",
+      "s0_s1_s2_s3"
+    ],
+    "alphabet": [
+      "a",
+      "1"
+    ],
     "transitions": {
       "s0": {
-        "1": ["s0_s1_s2_s3"]
+        "1": [
+          "s0_s1_s2_s3"
+        ]
       },
       "s0_s1_s2_s3": {
-        "1": ["s0_s1_s2_s3"],
-        "a": ["s0_s1_s2_s3"]
+        "1": [
+          "s0_s1_s2_s3"
+        ],
+        "a": [
+          "s0_s1_s2_s3"
+        ]
       }
     },
     "startState": "s0",
-    "acceptStates": ["s0", "s0_s1_s2_s3"],
+    "acceptStates": [
+      "s0",
+      "s0_s1_s2_s3"
+    ],
     "type": "DFA"
+  },
+  {
+    "id": "DX151FD",
+    "convertedFrom": "AX151FD",
+    "convert": true,
+    "name": "DFA_undefined",
+    "type": "DFA",
+    "states": [
+      "r'0",
+      "r'1",
+      "r'2"
+    ],
+    "alphabet": [
+      "0",
+      "1"
+    ],
+    "transitions": {
+      "r'0": {
+        "0": "r'1"
+      },
+      "r'1": {
+        "0": "r'1",
+        "1": "r'2"
+      },
+      "r'2": {}
+    },
+    "startState": "r'0",
+    "acceptStates": [
+      "r'2"
+    ]
   }
 ]
