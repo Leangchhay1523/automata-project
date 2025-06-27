@@ -56,30 +56,3 @@ export default function testString(automaton, input) {
   }
   return acceptStates.includes(state);
 }
-
-// const fa = {
-//   id: "MQ27DXI",
-//   name: "String contains no bb",
-//   minimizedFrom: "DQ27DXI",
-//   type: "DFA",
-//   states: ["Q0", "Q1", "Q2"],
-//   alphabet: ["a", "b"],
-//   transitions: {
-//     Q0: {
-//       a: "Q0",
-//       b: "Q1",
-//     },
-//     Q1: {
-//       a: "Q0",
-//       b: "Q2",
-//     },
-//     Q2: {
-//       a: "Q2",
-//       b: "Q2",
-//     },
-//   },
-//   startState: "Q0",
-//   acceptStates: ["Q0", "Q1"],
-// };
-
-// console.log(testString(fa, "ab"));

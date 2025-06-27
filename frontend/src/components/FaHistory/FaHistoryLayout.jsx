@@ -69,10 +69,15 @@ const FAHistoryLayout = () => {
 
   //TODO: Filter function
   const filter = (filterBy) => {
-    if (filterBy === "all") fetchFAs();
-    else if (filterBy === "input") fetchInputFAs();
-    else if (filterBy === "minimize") fetchMinimizedDFAs();
-    else if (filterBy === "nfatodfa") fetchConvertedDFAs();
+    if (filterBy === "all") {
+      fetchFAs();
+    } else if (filterBy === "input") {
+      fetchInputFAs();
+    } else if (filterBy === "minimize") {
+      fetchMinimizedDFAs();
+    } else if (filterBy === "nfatodfa") {
+      fetchConvertedDFAs();
+    }
   };
 
   return (

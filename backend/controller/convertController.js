@@ -11,7 +11,9 @@ import nfaToDfa from "../logic/nfaToDfaLogic.js";
 // Function to create a new FA as converted
 export const createConvert = async (req, res) => {
   const { id } = req.body;
-  if (!id) return res.status(400).json({ error: "Missing FA id" });
+  if (!id) {
+    return res.status(400).json({ error: "Missing FA id" });
+  }
 
   try {
     const original = await getFAById(id);
@@ -76,8 +78,9 @@ export const getAllConverts = async (_req, res) => {
 export const getConvert = async (req, res) => {
   try {
     const conv = await getConvertById(req.params.id);
-    if (!conv)
+    if (!conv) {
       return res.status(404).json({ error: "Converted DFA not found" });
+    }
     res.json(conv);
   } catch (err) {
     console.error("getConvert error:", err);
