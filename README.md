@@ -60,7 +60,7 @@ flowchart LR
 | Technology | Figure                                                                                                                    | Detail                                                      |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
 | Node.js    | ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)                   | Runs the server-side JavaScript environment.                |
-| Expres.js  | ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) | A framework for Node.js, used to create RESTful API routes. |
+| Express.js | ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) | A framework for Node.js, used to create RESTful API routes. |
 
 ### Project Structure
 
