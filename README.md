@@ -133,6 +133,6 @@ npm run dev
 ## Contributors
 
 - Ty Punleu - https://github.com/PunleuTY
-- Srey Sitharath -
+- Srey Sitharath - https://github.com/Sitharath-s
 - Song Kimleangchhay - https://github.com/Leangchhay1523
-- Khy Pichsereyvathanak -
+- Khy Pichsereyvathanak - https://github.com/PichSereyVathanak
