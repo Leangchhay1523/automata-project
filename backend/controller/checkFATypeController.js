@@ -1,5 +1,5 @@
 import { getFAById } from "../models/faModel.js";
-import { checkFAType } from "../logic/checkFAType.js";
+import { checkFAType } from "../logic/checkFaTypeLogic.js";
 
 // Function to get the type of the FA
 export async function getFAType(req, res) {

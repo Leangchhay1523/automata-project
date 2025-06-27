@@ -1,34 +1,69 @@
 import Button from "../common/Button";
-import Input from "../common/Input";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
 import { TiTick } from "react-icons/ti";
+import Table from "../common/Table";
+import { getEveryFa, createMinimizedDFA, getFAById } from "@/api/api.js";
 
 export default function FaConverter() {
   const [inputError, setInputError] = useState(false);
   const [reset, setReset] = useState(false);
   const [selectedNFA, setSelectedNFA] = useState(""); // NFA ID
+  const [convertedDFA, setConvertedDFA] = useState(null);
   const [showResult, setShowResult] = useState(false);
+  const [allFA, setAllFa] = useState([]);
+  const [selectedDFAData, setSelectedDFAData] = useState(null);
+
+  useEffect(() => {
+    const fetchFAs = async () => {
+      try {
+        const fa = await getEveryFa();
+        const filteredFa = fa.filter((item) => item.type === "NFA");
+        setAllFa(filteredFa);
+      } catch (error) {
+        console.log("Error fetching FAs:", error);
+      }
+    };
+    fetchFAs();
+  }, []);
 
   const style = {
     error: "text-red-500 font-semibold",
   };
 
-  //TODO: Fetch NFA from server
-  const NFA = [
-    { id: "1", name: "NFA 1" },
-    { id: "2", name: "NFA 2" },
-    { id: "3", name: "NFA 3" },
-    { id: "4", name: "NFA 4" },
-    { id: "5", name: "NFA 5" },
-    { id: "6", name: "NFA 6" },
-  ];
+  const convertNFA = async (nfaId) => {
+    try {
+      const response = await createMinimizedDFA(nfaId);
+      console.log("Converted DFA Response:", response);
+      setConvertedDFA(response);
+    } catch (error) {
+      console.error("Error converting NFA to DFA:", error);
+      setInputError(true);
+    }
+  };
 
-  const handleSubmit = () => {
+  const getFaDataById = async (id) => {
+    try {
+      const faData = await getFAById(id);
+      console.log("Fetched FA Data:", faData);
+      setSelectedDFAData(faData);
+    } catch (error) {
+      console.error("Error fetching FA by ID:", error);
+    }
+  };
+
+  const handleSubmit = async () => {
     if (selectedNFA.trim() === "") {
       setInputError(true);
       return;
     }
+    console.log("Selected NFA ID:", selectedNFA);
+    await convertNFA(selectedNFA);
+    await getFaDataById(selectedNFA);
+    setShowResult(true);
+    setInputError(false);
+    setReset(true);
+    setSelectedNFA("");
   };
 
   return (
@@ -40,7 +75,7 @@ export default function FaConverter() {
       <SingleSelectionDropDown
         selectedIcon={TiTick}
         reset={reset}
-        option={NFA}
+        option={allFA}
         className="h-[40px]"
         placeholder={"Select an NFA"}
         setOption={setSelectedNFA}
@@ -56,12 +91,12 @@ export default function FaConverter() {
         <div className="flex flex-col gap-3">
           <p className="font-raleway-bold w-full text-[20px]">Result</p>
           <div>
-            <p>Original DFA</p>
-            <Table fa={fa} />
+            <p>Original NFA: {selectedDFAData.name}</p>
+            <Table fa={selectedDFAData} />
           </div>
           <div>
-            <p>Minimized DFA</p>
-            <Table fa={fa} />
+            <p>Converted DFA</p>
+            <Table fa={convertedDFA} />
           </div>
         </div>
       )}

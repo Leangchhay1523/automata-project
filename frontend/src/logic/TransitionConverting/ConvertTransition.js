@@ -15,7 +15,7 @@ const processingRawTransition = (rawTransition, symbols, states) => {
       structureTransition[currentState] &&
       structureTransition[currentState][inputSymbol]
     ) {
-      structureTransition[currentState][inputSymbol].push(nextState);
+      structureTransition[currentState][inputSymbol] = nextState;
     }
   }
 

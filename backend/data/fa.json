@@ -1,9 +1,57 @@
 [
   {
-    "id": "AJIA8WX",
+    "id": "AQ27DXI",
     "type": "DFA",
     "convert": false,
     "minimize": true,
+    "name": "String contains no bb",
+    "states": [
+      "q0",
+      "q1",
+      "q2"
+    ],
+    "alphabet": [
+      "a",
+      "b"
+    ],
+    "transitions": {
+      "q0": {
+        "a": [
+          "q0"
+        ],
+        "b": [
+          "q1"
+        ]
+      },
+      "q1": {
+        "a": [
+          "q0"
+        ],
+        "b": [
+          "q2"
+        ]
+      },
+      "q2": {
+        "a": [
+          "q2"
+        ],
+        "b": [
+          "q2"
+        ]
+      }
+    },
+    "startState": "q0",
+    "acceptStates": [
+      "q0",
+      "q1"
+    ]
+  },
+  {
+    "id": "AGVLTM2",
+    "type": "DFA",
+    "convert": false,
+    "minimize": true,
+    "name": "String ends with 01",
     "states": [
       "q0",
       "q1",
@@ -15,260 +63,260 @@
     ],
     "transitions": {
       "q0": {
-        "0": "q1",
-        "1": "q2"
+        "0": [
+          "q1"
+        ],
+        "1": [
+          "q0"
+        ]
       },
       "q1": {
-        "0": "q1",
-        "1": "q1"
+        "0": [
+          "q1"
+        ],
+        "1": [
+          "q2"
+        ]
       },
       "q2": {
-        "0": "q2",
-        "1": "q2"
+        "0": [
+          "q1"
+        ],
+        "1": [
+          "q0"
+        ]
       }
     },
     "startState": "q0",
     "acceptStates": [
-      "q1",
       "q2"
     ]
   },
   {
-    "id": "APHR5GK",
-    "type": "NFA",
+    "id": "AEDLLVO",
+    "type": "DFA",
     "convert": false,
-    "minimize": true,
+    "minimize": false,
+    "name": "String contains even number of 0's",
     "states": [
-      "s0",
-      "s1"
+      "q0",
+      "q1"
     ],
     "alphabet": [
-      "b",
-      "a"
+      "0",
+      "1"
     ],
     "transitions": {
-      "s0": {
-        "b": [],
-        "a": [
-          "s1",
-          "s0"
+      "q0": {
+        "0": [
+          "q1"
+        ],
+        "1": [
+          "q0"
         ]
       },
-      "s1": {
-        "b": [
-          "s1",
-          "s0"
+      "q1": {
+        "0": [
+          "q0"
         ],
-        "a": [
-          "s0",
-          "s1"
+        "1": [
+          "q1"
         ]
       }
     },
-    "startState": "s0",
+    "startState": "q0",
     "acceptStates": [
-      "s0",
-      "s1"
+      "q0"
     ]
   },
   {
-    "id": "A5DLBJE",
-    "type": "DFA",
-    "convert": false,
+    "id": "A2653B2",
+    "type": "NFA",
+    "convert": true,
     "minimize": true,
+    "name": "String contains aba",
     "states": [
-      "s0",
-      "s1",
-      "s2"
+      "q0",
+      "q1",
+      "q2",
+      "q3"
     ],
     "alphabet": [
       "a",
       "b"
     ],
     "transitions": {
-      "s0": {
+      "q0": {
         "a": [
-          "s1"
+          "q0",
+          "q1"
         ],
         "b": [
-          "s1"
+          "q0"
         ]
       },
-      "s1": {
+      "q1": {
         "a": [
-          "s0"
+          "q1"
         ],
         "b": [
-          "s2"
+          "q2"
         ]
       },
-      "s2": {
+      "q2": {
         "a": [
-          "s2"
+          "q3"
+        ],
+        "b": []
+      },
+      "q3": {
+        "a": [
+          "q3"
         ],
         "b": [
-          "s0"
+          "q3"
         ]
       }
     },
-    "startState": "s0",
+    "startState": "q0",
     "acceptStates": [
-      "s1"
+      "q3"
     ]
   },
   {
-    "id": "ACNLWEO",
-    "type": "NFA",
-    "convert": true,
+    "id": "AAGFAZS",
+    "type": "DFA",
+    "convert": false,
     "minimize": true,
+    "name": "String starts with a or end with b",
     "states": [
-      "s0",
-      "s1"
-    ],
-    "alphabet": [
-      "0",
-      "1"
-    ],
-    "transitions": {
-      "s0": {
-        "0": [
-          "s1"
-        ],
-        "1": []
-      },
-      "s1": {
-        "0": [
-          "s1",
-          "s0"
-        ],
-        "1": []
-      }
-    },
-    "startState": "s0",
-    "acceptStates": [
-      "s1",
-      "s0"
-    ]
-  },
-  {
-    "id": "ACL5LY3",
-    "type": "NFA",
-    "convert": true,
-    "minimize": true,
-    "states": [
-      "s0",
-      "s1",
-      "s2",
-      "s3"
+      "q0",
+      "q1",
+      "q2",
+      "q3"
     ],
     "alphabet": [
       "a",
-      "1"
+      "b"
     ],
     "transitions": {
-      "s0": {
-        "1": [
-          "s1",
-          "s2",
-          "s0",
-          "s3"
-        ],
-        "a": []
-      },
-      "s1": {
-        "1": [
-          "s2",
-          "s3"
-        ],
+      "q0": {
         "a": [
-          "s2",
-          "s0",
-          "s1"
+          "q1"
+        ],
+        "b": [
+          "q2"
         ]
       },
-      "s2": {
-        "1": [
-          "s2"
-        ],
+      "q1": {
         "a": [
-          "s3",
-          "s1",
-          "s2",
-          "s0"
+          "q1"
+        ],
+        "b": [
+          "q1"
         ]
       },
-      "s3": {
-        "1": [
-          "s3",
-          "s2",
-          "s1"
-        ],
+      "q2": {
         "a": [
-          "s1",
-          "s2",
-          "s3"
+          "q2"
+        ],
+        "b": [
+          "q3"
+        ]
+      },
+      "q3": {
+        "a": [
+          "q3"
+        ],
+        "b": [
+          "q3"
         ]
       }
     },
-    "startState": "s0",
+    "startState": "q0",
     "acceptStates": [
-      "s1",
-      "s0",
-      "s3"
+      "q1",
+      "q3"
     ]
   },
   {
-    "id": "AX151FD",
+    "id": "AY8U5D5",
     "type": "NFA",
     "convert": false,
-    "minimize": true,
+    "minimize": false,
+    "name": "String contains ab (with epsilon)",
     "states": [
-      "r0",
-      "r1",
-      "r2",
-      "r3",
-      "r4"
+      "q0",
+      "q1",
+      "q2",
+      "q3"
     ],
     "alphabet": [
-      "0",
-      "1",
+      "a",
+      "b",
       "ε"
     ],
     "transitions": {
-      "r0": {
-        "0": [
-          "r0",
-          "r1"
+      "q0": {
+        "a": [
+          "q0"
         ],
+        "b": [],
         "ε": [
-          "r2"
+          "q1"
         ]
       },
-      "r1": {
-        "1": [
-          "r3"
-        ]
+      "q1": {
+        "a": [
+          "q2"
+        ],
+        "b": [],
+        "ε": []
       },
-      "r2": {
-        "0": [
-          "r4"
-        ]
+      "q2": {
+        "a": [],
+        "b": [
+          "q3"
+        ],
+        "ε": []
       },
-      "r3": {
-        "ε": [
-          "r4"
-        ]
-      },
-      "r4": {
-        "1": [
-          "r4"
-        ]
+      "q3": {
+        "a": [
+          "q3"
+        ],
+        "b": [
+          "q3"
+        ],
+        "ε": []
       }
     },
-    "startState": "r0",
+    "startState": "q0",
     "acceptStates": [
-      "r3",
-      "r4"
+      "q3"
+    ]
+  },
+  {
+    "id": "ABNPWHT",
+    "type": "NFA",
+    "convert": true,
+    "minimize": true,
+    "name": "Accept empty string",
+    "states": [
+      "q0"
+    ],
+    "alphabet": [
+      "a",
+      "b"
+    ],
+    "transitions": {
+      "q0": {
+        "a": [],
+        "b": []
+      }
+    },
+    "startState": "q0",
+    "acceptStates": [
+      "q0"
     ]
   }
 ]

@@ -1,15 +1,21 @@
 import Button from "../common/Button";
 import Input from "../common/Input";
 import { useState, useEffect } from "react";
+import { testString } from "@/api/api.js";
+import { useFaContext } from "@/context/FaContext";
 //TODO: impot the actual logic for testing the string against a finite automaton
 
-export default function FaTestString() {
+export default function FaTestString({ loadedFA }) {
   const [inputStr, setInputStr] = useState("");
-  const [tempInputStr, setTempInputStr] = useState("");
+  const [lastTestedStr, setLastTestedStr] = useState("");
+  const [result, setResult] = useState(null); // null | "accept" | "reject"
   const [inputError, setInputError] = useState(false);
   const [normal, setNormal] = useState(true);
   const [accept, setAccept] = useState(false);
   const [reject, setReject] = useState(false);
+  const [noFaError, setNoFaError] = useState(false);
+  const [loadedFa, setLoadedFa] = useState("");
+  const { selectedFA } = useFaContext();
 
   const style = {
     error: "text-red-500 font-semibold",
@@ -21,6 +27,14 @@ export default function FaTestString() {
   };
 
   useEffect(() => {
+    if (selectedFA) {
+      setLoadedFa(selectedFA.id);
+      console.log("Selected FA:", selectedFA);
+      setNoFaError(false);
+    }
+  }, [selectedFA]);
+
+  useEffect(() => {
     if (inputStr.trim() === "") {
       setNormal(true);
       setAccept(false);
@@ -28,33 +42,31 @@ export default function FaTestString() {
     }
   }, [inputStr]);
 
-  //TODO: Replace this with actual logic to test the string against a finite automaton
-  const testString = (str) => {
-    if (str === "a") return false;
-    if (str === "b") return true;
+  const testFaString = async (str) => {
+    try {
+      const response = await testString(loadedFa, str);
+      return response.accepted;
+    } catch (error) {
+      console.error("Error testing string:", error);
+      return false;
+    }
   };
 
   const handleInputStr = (data) => {
     setInputStr(data);
+    setResult(null); // Reset result when input changes
   };
 
-  const handleSubmit = () => {
-    if (inputStr.trim() === "") {
-      setInputError(true);
+  const handleSubmit = async () => {
+    if (!loadedFa) {
+      setNoFaError(true);
       return;
     }
     setInputError(false);
-    console.log("Input String:", inputStr);
 
-    const result = testString(inputStr);
-    setTempInputStr(inputStr);
-    if (result) {
-      setAccept(true);
-      setNormal(false);
-    } else {
-      setReject(true);
-      setNormal(false);
-    }
+    const accepted = await testFaString(inputStr);
+    setLastTestedStr(inputStr);
+    setResult(accepted ? "accept" : "reject");
   };
 
   return (
@@ -62,7 +74,9 @@ export default function FaTestString() {
       <div className="flex gap-4">
         <p className="font-roboto-bold">Enter a string to test</p>
         {inputError && <p className={style.error}>Please enter a string</p>}
+        {noFaError && <p className={style.error}>Please load an FA</p>}
       </div>
+      {selectedFA ? <p>FA: {selectedFA.name}</p> : <p>FA: No FA loaded</p>}
       <div className="w-full flex gap-3">
         <Input
           width="w-full"
@@ -72,19 +86,19 @@ export default function FaTestString() {
         />
         <Button content={"Test"} isPrimary={true} onClick={handleSubmit} />
       </div>
-      {normal && (
+      {result === null && (
         <div className={`${style.result} ${style.normal}`}>
           Result appears here
         </div>
       )}
-      {accept && (
+      {result === "accept" && (
         <div className={`${style.result} ${style.accept}`}>
-          {tempInputStr} is accepted
+          {lastTestedStr} is accepted
         </div>
       )}
-      {reject && (
+      {result === "reject" && (
         <div className={`${style.result} ${style.reject}`}>
-          {tempInputStr} is rejected
+          {lastTestedStr} is rejected
         </div>
       )}
     </div>

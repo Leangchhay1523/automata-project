@@ -7,22 +7,27 @@ import {
   deleteMin as removeMin,
 } from "../models/minimizeModel.js";
 import { transformId } from "../utils/idGenerator.js";
-import nfaToDfa from "../logic/nfaTodfa.js";
-import minimizeDfa from "../logic/Minimization.js";
+import nfaToDfa from "../logic/nfaToDfaLogic.js";
+import minimizeDfa from "../logic/minimizeDfaLogic.js";
 
 // Function to create a new DFA as minimized DFA
 export const createMinimize = async (req, res) => {
   const { id } = req.body;
-  if (!id) return res.status(400).json({ error: "Missing FA id" });
+  if (!id) {
+    return res.status(400).json({ error: "Missing FA id" });
+  }
 
   try {
     const dfaId = transformId("D", id);
     let dfa = await getConvertById(dfaId);
     let converted = false;
 
+    const original = await getFAById(id);
+
     if (!dfa) {
-      const original = await getFAById(id);
-      if (!original) return res.status(404).json({ error: "FA not found" });
+      if (!original) {
+        return res.status(404).json({ error: "FA not found" });
+      }
 
       let dfaData;
       if (original.type === "NFA") {
@@ -33,9 +38,9 @@ export const createMinimize = async (req, res) => {
           original;
         dfaData = { states, alphabet, transitions, startState, acceptStates };
       }
-
       dfa = {
         id: dfaId,
+        name: original.name,
         convertedFrom: id,
         convert: converted,
         ...dfaData,
@@ -47,24 +52,19 @@ export const createMinimize = async (req, res) => {
     await updateFA(id, { convert: converted });
 
     const minId = transformId("M", id);
-    const minName = `M${(await getAllMin()).length + 1}`;
 
     const existing = await getMinById(minId);
     if (existing) {
       await updateFA(id, { minimize: true });
       return res.json({ ...existing, convert: converted, minimize: true });
     }
-
     const minData = minimizeDfa(dfa);
     const record = {
-      minimized_id: minId,
-      name: minName,
+      id: minId,
+      name: original.name,
       minimizedFrom: dfa.id,
-      convert: converted,
-      minimize: true,
       ...minData,
     };
-
     await addMin(record);
     await updateFA(id, { minimize: true });
 
@@ -76,7 +76,6 @@ export const createMinimize = async (req, res) => {
 };
 
 // Funtion to get all the Minimimized FA
-
 export const getAllMinimizations = async (_req, res) => {
   try {
     res.json(await getAllMin());
@@ -89,7 +88,9 @@ export const getAllMinimizations = async (_req, res) => {
 export const getMinimization = async (req, res) => {
   try {
     const min = await getMinById(req.params.id);
-    if (!min) return res.status(404).json({ error: "Minimized DFA not found" });
+    if (!min) {
+      return res.status(404).json({ error: "Minimized DFA not found" });
+    }
     res.json(min);
   } catch (err) {
     console.error("getMinimization error:", err);

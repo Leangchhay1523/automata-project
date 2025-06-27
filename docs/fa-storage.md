@@ -49,7 +49,8 @@ Example:
 
 ```json
 {
-  "name": "1",
+  "id": "",
+  "name": "fa's name",
   "type": "DFA",
   "states": ["q0", "q1", "q2"],
   "alphabet": ["a", "b"],

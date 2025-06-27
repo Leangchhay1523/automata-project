@@ -2,7 +2,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
-import { checkFAType } from "../logic/checkFAType.js";
+import { checkFAType } from "../logic/checkFaTypeLogic.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,7 +54,9 @@ export async function getAllFA() {
 export async function updateFA(id, updates) {
   const all = await readAll();
   const idx = all.findIndex((f) => f.id === id);
-  if (idx === -1) throw new Error(`FA ${id} not found`);
+  if (idx === -1) {
+    throw new Error(`FA ${id} not found`);
+  }
   all[idx] = { ...all[idx], ...updates };
   await writeAll(all);
   return all[idx];

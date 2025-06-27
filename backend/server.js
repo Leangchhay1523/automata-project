@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 import faRoutes from "./routes/FAinputRoutes.js";
-import convertRoutes from "./routes/FAConversionRoutes.js";
+import convertRoutes from "./routes/FAconversionRoutes.js";
 import minimizeRoutes from "./routes/FAminimizeRoutes.js";
 import typeRoutes from "./routes/FAtypeCheckerRoutes.js";
 import logger from "./middleware/logger.js";
@@ -38,6 +38,6 @@ async function ensureDataDirs() {
 
   app.use((_, res) => res.status(404).json({ error: "Route not found" }));
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => console.log(`🚀 Backend listening on ${PORT}`));
+  const PORT = 3000;
+  app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 })();

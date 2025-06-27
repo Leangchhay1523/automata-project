@@ -29,22 +29,22 @@ async function writeAll(arr) {
 
 export async function addMin(minimized) {
   const all = await readAll();
-  const { id, ...publicRecord } = minimized;
-  all.push(publicRecord);
+  all.push(minimized);
   await writeAll(all);
 }
 
-export async function getMinById(minimized_id) {
+export async function getMinById(id) {
   const all = await readAll();
-  return all.find((m) => m.minimized_id === minimized_id) || null;
+  console.log(all);
+  return all.find((m) => m.id === id) || null;
 }
 
 export async function getAllMin() {
   return await readAll();
 }
 
-export async function deleteMin(minimized_id) {
+export async function deleteMin(id) {
   let all = await readAll();
-  all = all.filter((m) => m.minimized_id !== minimized_id);
+  all = all.filter((m) => m.id !== id);
   await writeAll(all);
 }

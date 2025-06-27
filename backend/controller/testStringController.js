@@ -1,6 +1,7 @@
 import { getFAById } from "../models/faModel.js";
 import { getConvertById } from "../models/convertModel.js";
-import testString from "../logic/testString.js";
+import { getMinById } from "../models/minimizeModel.js";
+import testString from "../logic/testStringLogic.js";
 
 // Function to testing the inputed string
 export async function runTestString(req, res) {
@@ -12,18 +13,17 @@ export async function runTestString(req, res) {
     // fetch original FA
     let fa = await getFAById(id);
     if (!fa) {
-      return res.status(404).json({ error: "FA not found" });
+      // check if it's a minimized DFA
+      fa = await getMinById(id);
+      if (!fa) {
+        // check if it's a converted DFA
+        fa = await getConvertById(id);
+        if (!fa) {
+          return res.status(404).json({ error: "FA not found" });
+        }
+      }
     }
     let automaton = fa;
-    // if NFA, auto-convert to DFA first
-    if (fa.type === "NFA") {
-      const convId = `D${id}`;
-      const dfa = await getConvertById(convId);
-      if (!dfa) {
-        return res.status(404).json({ error: "Converted DFA not found" });
-      }
-      automaton = dfa;
-    }
     const accepted = testString(automaton, input);
     res.json({ id, input, accepted });
   } catch (err) {

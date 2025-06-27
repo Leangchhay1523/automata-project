@@ -19,22 +19,37 @@ function isDFA(fa) {
 }
 
 const fa = {
-  type: "DFA",
-  name: "Binary String for Even Number",
-  states: ["q0", "q1"],
-  alphabet: ["0", "1"],
+  id: "AY8U5D5",
+  type: "NFA",
+  convert: false,
+  minimize: false,
+  name: "String contains ab (with epsilon)",
+  states: ["q0", "q1", "q2", "q3"],
+  alphabet: ["a", "b", "ε"],
   transitions: {
     q0: {
-      0: ["q0"],
-      1: ["q1"],
+      a: ["q0"],
+      b: [],
+      ε: ["q1"],
     },
     q1: {
-      0: ["q0"],
-      1: ["q1"],
+      a: ["q2"],
+      b: [],
+      ε: [],
+    },
+    q2: {
+      a: [],
+      b: ["q3"],
+      ε: [],
+    },
+    q3: {
+      a: ["q3"],
+      b: ["q3"],
+      ε: [],
     },
   },
   startState: "q0",
-  acceptStates: ["q0"],
+  acceptStates: ["q3"],
 };
 
 console.log(checkFAType(fa)); // Output: DFA
