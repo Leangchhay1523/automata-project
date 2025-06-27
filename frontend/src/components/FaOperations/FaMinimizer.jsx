@@ -1,50 +1,69 @@
 import Button from "../common/Button";
-import Input from "../common/Input";
 import { useState, useEffect } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
 import { TiTick } from "react-icons/ti";
 import Table from "../common/Table";
+import { getEveryFa, createMinimizedDFA, getFAById } from "@/api/api.js";
 
 export default function FaMinimizer() {
   const [inputError, setInputError] = useState(false);
   const [reset, setReset] = useState(false);
   const [selectedDFA, setSelectedDFA] = useState(""); // NFA ID
   const [showResult, setShowResult] = useState(false);
+  const [allFa, setAllFa] = useState([]);
+  const [selectedNFAData, setSelectedNFAData] = useState(null);
+  const [minimizedDFA, setMinimizedDFA] = useState(null);
 
   const style = {
     error: "text-red-500 font-semibold",
   };
-  //TODO: Needed - Selected DFA and Result from Server
-  //TODO: Fetch DFA from server
-  const DFA = [
-    { id: "1", name: "NFA 1" },
-    { id: "2", name: "NFA 2" },
-    { id: "3", name: "NFA 3" },
-    { id: "4", name: "NFA 4" },
-    { id: "5", name: "NFA 5" },
-    { id: "6", name: "NFA 6" },
-  ];
 
-  const handleSubmit = () => {
+  const minimizeDFA = async (dfaId) => {
+    try {
+      const response = await createMinimizedDFA(dfaId);
+      console.log("Converted DFA Response:", response);
+      setMinimizedDFA(response);
+    } catch (error) {
+      console.error("Error converting NFA to DFA:", error);
+      setInputError(true);
+    }
+  };
+
+  const getDfaDataById = async (id) => {
+    try {
+      const faData = await getFAById(id);
+      console.log("Fetched FA Data:", faData);
+      setSelectedNFAData(faData);
+    } catch (error) {
+      console.error("Error fetching FA by ID:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchFAs = async () => {
+      try {
+        const fa = await getEveryFa();
+        const filteredFa = fa.filter((item) => item.type === "DFA");
+        setAllFa(filteredFa);
+      } catch (error) {
+        console.log("Error fetching FAs:", error);
+      }
+    };
+    fetchFAs();
+  }, []);
+
+  const handleSubmit = async () => {
     if (selectedDFA.trim() === "") {
       setInputError(true);
       return;
     }
-  };
-
-  const fa = {
-    id: "",
-    type: "",
-    name: "",
-    states: ["q0", "q1", "q2"],
-    alphabet: ["a", "b", "c"],
-    transitions: {
-      q0: { a: ["q1"], b: ["q2"] },
-      q1: { a: ["q0"], b: ["q2"] },
-      q2: { a: ["q2"], b: ["q1"] },
-    },
-    startState: "q0",
-    acceptStates: ["q2"],
+    console.log("Selected NFA ID:", selectedDFA);
+    await minimizeDFA(selectedDFA);
+    await getDfaDataById(selectedDFA);
+    setShowResult(true);
+    setInputError(false);
+    setReset(true);
+    setSelectedDFA("");
   };
 
   return (
@@ -56,7 +75,7 @@ export default function FaMinimizer() {
       <SingleSelectionDropDown
         selectedIcon={TiTick}
         reset={reset}
-        option={DFA}
+        option={allFa}
         className="h-[40px]"
         placeholder={"Select a DFA"}
         setOption={setSelectedDFA}
@@ -72,12 +91,12 @@ export default function FaMinimizer() {
         <div className="flex flex-col gap-3">
           <p className="font-raleway-bold w-full text-[20px]">Result</p>
           <div>
-            <p>Original DFA</p>
-            <Table fa={fa} />
+            <p>Original DFA: {selectedNFAData.name}</p>
+            {selectedNFAData && <Table fa={selectedNFAData} />}
           </div>
           <div>
             <p>Minimized DFA</p>
-            <Table fa={fa} />
+            {minimizedDFA && <Table fa={minimizedDFA} />}
           </div>
         </div>
       )}

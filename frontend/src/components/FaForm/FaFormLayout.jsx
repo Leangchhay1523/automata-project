@@ -1,6 +1,7 @@
 // Component
 import Input from "../common/Input";
 import Button from "../common/Button";
+import CheckBox from "../common/Checkbox";
 
 // Icon
 import { RxCross2 } from "react-icons/rx";
@@ -10,13 +11,14 @@ import { TiTick } from "react-icons/ti";
 import { useState, useEffect } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
 import FaTransitionsInput from "./FaTransitionsInput";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 // Functions
 import { processingRawTransition } from "../../logic/TransitionConverting/ConvertTransition";
 import MultiSelectDropdown from "../common/MultiSelectionDropDown";
 import { checkFAType } from "../../logic/CheckFAtype/DFA-NFA";
+
+// API
+import { createFA } from "@/api/api.js";
 
 export default function FaFormLayout() {
   // Variables
@@ -42,6 +44,7 @@ export default function FaFormLayout() {
   const [faFinalState, setFaFinalState] = useState([]);
   const [reset, setReset] = useState(false);
   const [formIsOpen, setFormIsOpen] = useState(false);
+  const [includeEpsilon, setIncludeEpsilon] = useState(false);
   // Error States
   const [checkName, setCheckName] = useState(false);
   const [checkState, setCheckState] = useState(false);
@@ -50,6 +53,19 @@ export default function FaFormLayout() {
   const [checkStartState, setCheckStartState] = useState(false);
   const [checkFinalState, setCheckFinalState] = useState(false);
   // Functions
+
+  useEffect(() => {
+    if (includeEpsilon) {
+      setFaAlphabet((prev) => {
+        if (!prev.includes("ε")) {
+          return [...prev, "ε"];
+        }
+        return prev;
+      });
+    } else {
+      setFaAlphabet((prev) => prev.filter((symbol) => symbol !== "ε"));
+    }
+  }, [includeEpsilon]);
 
   const resetFa = () => {
     setFaName("");
@@ -109,7 +125,7 @@ export default function FaFormLayout() {
       setCheckAlphabet(false);
     }
 
-    if (allRawTransition.length === 0 || validateTransition()) {
+    if (validateTransition()) {
       setCheckTransition(true);
       isValid = false;
     } else {
@@ -133,10 +149,6 @@ export default function FaFormLayout() {
     return isValid;
   };
 
-  const errorToast = () => {
-    toast.error("FA Creation Failed.");
-  };
-
   const handleSubmit = () => {
     if (!validateFa()) {
       console.log("Invalid FA");
@@ -156,7 +168,6 @@ export default function FaFormLayout() {
       );
     } catch (error) {
       console.error("Error processing transitions: ", error);
-      errorToast();
       return;
     }
 
@@ -174,17 +185,18 @@ export default function FaFormLayout() {
       acceptStates: faFinalState,
     };
 
+    // Check type to alert
+    let faType = "";
     try {
-      var faType = checkFAType(newFa);
-    } catch (error) {
-      console.error("Error checking FA type: ", error);
-      errorToast();
-      return;
+      faType = checkFAType(newFa);
+      alert(`FA created as ${faType}`);
+    } catch (err) {
+      console.log("Error checking type", err);
     }
-
     newFa.type = faType;
-    toast.success(`FA created successfully as a ${faType}!`);
+
     console.log(newFa);
+    createFA(newFa);
 
     resetFa();
     setReset(true);
@@ -196,7 +208,7 @@ export default function FaFormLayout() {
     }
   }, [reset]);
 
-  // General functions`
+  // General functions
   useEffect(() => {
     console.log("FA States: ", faState);
   }, [faState]);
@@ -258,7 +270,7 @@ export default function FaFormLayout() {
   const addTransition = () => {
     setallRawTransition((prev) => [
       ...prev,
-      { id: Date.now(), currentState: "", inputSymbol: "", nextState: "" },
+      { id: Date.now(), currentState: "", inputSymbol: "", nextState: [] },
     ]);
   };
 
@@ -290,18 +302,6 @@ export default function FaFormLayout() {
 
   return (
     <div className="w-full max-w-[95vw] sm:max-w-[90vw] lg:max-w-8/10 flex flex-col gap-4 sm:gap-5 justify-center items-center">
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick={false}
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover={false}
-        theme="light"
-      />
       <Button content="Create an FA" isPrimary={true} onClick={toggleForm} />
       {formIsOpen && (
         <div className={style.form}>
@@ -375,6 +375,11 @@ export default function FaFormLayout() {
               </div>
               {symbolError && <p className={style.error}>Invalid Symbol</p>}
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-start sm:items-center mt-2 sm:mt-0">
+                <CheckBox
+                  result={includeEpsilon}
+                  content={"Include Epsilon"}
+                  setResult={setIncludeEpsilon}
+                />
                 <input
                   className="border border-(--color-dark) w-full sm:w-36 rounded-sm px-3 py-1.5 h-9 sm:h-10 focus:outline-none focus:ring-2 focus:ring-(-color--dark)"
                   placeholder={"Enter Symbol"}

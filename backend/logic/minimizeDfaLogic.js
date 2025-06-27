@@ -9,24 +9,38 @@ export function removeUnreachableStates(dfa) {
       reachable.add(state);
       const transMap = dfa.transitions[state] || {};
       for (const sym of dfa.alphabet) {
-        (transMap[sym] || []).forEach((t) => {
-          if (!reachable.has(t)) queue.push(t);
+        // ⬅️ coerce to array even if map[sym] is a single string
+        const targets = Array.isArray(transMap[sym])
+          ? transMap[sym]
+          : [transMap[sym]];
+        targets.forEach((t) => {
+          if (t != null && !reachable.has(t)) queue.push(t);
         });
       }
     }
   }
 
+  // build a cleaned DFA containing only reachable states
   const cleaned = {
-    ...dfa,
-    states: dfa.states.filter((s) => reachable.has(s)),
-    acceptStates: dfa.acceptStates.filter((s) => reachable.has(s)),
+    type: dfa.type,
+    states: Array.from(reachable),
+    alphabet: dfa.alphabet,
     transitions: {},
+    startState: dfa.startState,
+    acceptStates: dfa.acceptStates.filter((s) => reachable.has(s)),
   };
+
   for (const s of cleaned.states) {
-    if (dfa.transitions[s]) {
-      cleaned.transitions[s] = { ...dfa.transitions[s] };
+    const map = dfa.transitions[s] || {};
+    cleaned.transitions[s] = {};
+    for (const sym of dfa.alphabet) {
+      const targets = Array.isArray(map[sym]) ? map[sym] : [map[sym]];
+      cleaned.transitions[s][sym] = targets.filter(
+        (t) => t != null && reachable.has(t)
+      );
     }
   }
+
   return cleaned;
 }
 
@@ -44,14 +58,23 @@ export function refinePartitions(dfa) {
 
     for (const group of partitions) {
       const buckets = new Map();
+
       for (const state of group) {
-        // signature: list of indices of destination-groups
+        const transMap = dfa.transitions[state] || {};
+        // build a signature that says “on each symbol, which partition do I go to?”
         const sig = dfa.alphabet
           .map((sym) => {
-            const dest = (dfa.transitions[state]?.[sym] || [])[0];
-            return partitions.findIndex((p) => p.has(dest));
+            const targets = Array.isArray(transMap[sym])
+              ? transMap[sym]
+              : [transMap[sym]];
+            // look up the index of each target’s partition
+            const idxs = targets.map((t) =>
+              partitions.findIndex((p) => p.has(t))
+            );
+            return idxs.join(",");
           })
-          .join(",");
+          .join("|");
+
         if (!buckets.has(sig)) buckets.set(sig, new Set());
         buckets.get(sig).add(state);
       }
@@ -68,7 +91,7 @@ export function refinePartitions(dfa) {
   return partitions;
 }
 
-// Step 4: Build the minimized DFA object
+// Step 4: Build the minimized DFA from partitions
 export function buildMinimizedDFA(dfa, partitions) {
   const stateMap = {};
   const newStates = [];
@@ -77,35 +100,37 @@ export function buildMinimizedDFA(dfa, partitions) {
   const nameByGroup = new Map();
   let counter = 1;
 
-  // assign group names
+  // assign new state names
   for (const grp of partitions) {
     const repr = [...grp][0];
     const name = grp.has(dfa.startState) ? "Q0" : `Q${counter++}`;
     nameByGroup.set(grp, name);
     newStates.push(name);
-
     for (const s of grp) stateMap[s] = name;
     if ([...grp].some((s) => dfa.acceptStates.includes(s))) {
       newAccept.push(name);
     }
   }
 
-  // transitions per new state
-  for (const grp of partitions) {
+  // build transition table
+  for (const [grp, name] of nameByGroup.entries()) {
+    newTrans[name] = {};
+    // pick any representative old state
     const repr = [...grp][0];
-    const gName = nameByGroup.get(grp);
-    newTrans[gName] = {};
+    const transMap = dfa.transitions[repr] || {};
     for (const sym of dfa.alphabet) {
-      const dest = (dfa.transitions[repr]?.[sym] || [])[0];
-      if (dest !== undefined) {
-        newTrans[gName][sym] = [stateMap[dest]];
+      const targets = Array.isArray(transMap[sym])
+        ? transMap[sym]
+        : [transMap[sym]];
+      // all targets in this DFA collapse into one new state
+      const first = targets.find((t) => t != null);
+      if (first != null) {
+        newTrans[name][sym] = stateMap[first];
       }
     }
   }
 
   return {
-    id: dfa.id,
-    name: `${dfa.name}_Minimized`,
     type: "DFA",
     states: newStates,
     alphabet: dfa.alphabet,
@@ -115,11 +140,12 @@ export function buildMinimizedDFA(dfa, partitions) {
   };
 }
 
-// The one-stop helper your controller will call:
+// Function to perForm the minimize operation
 function minimizeDfa(dfa) {
   const clean = removeUnreachableStates(dfa);
   const parts = refinePartitions(clean);
   return buildMinimizedDFA(clean, parts);
 }
+
 export { minimizeDfa };
 export default minimizeDfa;

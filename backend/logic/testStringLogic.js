@@ -24,7 +24,7 @@ export default function testString(automaton, input) {
       current = nextSet;
     }
     // accepted if any current state is final
-    return [...current].some(s => acceptStates.includes(s));
+    return [...current].some((s) => acceptStates.includes(s));
   }
 
   // DFA: deterministic single-path traversal
@@ -33,11 +33,53 @@ export default function testString(automaton, input) {
     if (!alphabet.includes(sym)) {
       throw new Error(`Unknown symbol '${sym}'`);
     }
-    const targets = transitions[state]?.[sym] || [];
-    if (targets.length !== 1) {
-      throw new Error(`Invalid DFA transition at state '${state}' on '${sym}'`);
+    const targets = transitions[state]?.[sym];
+    if (!targets) {
+      throw new Error(`No transition from state '${state}' on '${sym}'`);
     }
-    state = targets[0];
+    if (typeof targets === "string") {
+      // single target state as string
+      state = targets;
+    } else if (Array.isArray(targets)) {
+      // if array, must have exactly one element for DFA
+      if (targets.length !== 1) {
+        throw new Error(
+          `Invalid DFA transition at state '${state}' on '${sym}', expected single target`
+        );
+      }
+      state = targets[0];
+    } else {
+      throw new Error(
+        `Invalid transition format at state '${state}' on '${sym}'`
+      );
+    }
   }
   return acceptStates.includes(state);
 }
+
+// const fa = {
+//   id: "MQ27DXI",
+//   name: "String contains no bb",
+//   minimizedFrom: "DQ27DXI",
+//   type: "DFA",
+//   states: ["Q0", "Q1", "Q2"],
+//   alphabet: ["a", "b"],
+//   transitions: {
+//     Q0: {
+//       a: "Q0",
+//       b: "Q1",
+//     },
+//     Q1: {
+//       a: "Q0",
+//       b: "Q2",
+//     },
+//     Q2: {
+//       a: "Q2",
+//       b: "Q2",
+//     },
+//   },
+//   startState: "Q0",
+//   acceptStates: ["Q0", "Q1"],
+// };
+
+// console.log(testString(fa, "ab"));

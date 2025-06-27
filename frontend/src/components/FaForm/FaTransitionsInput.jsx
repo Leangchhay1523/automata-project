@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
+import MultiSelectDropdown from "../common/MultiSelectionDropDown";
 import { TiTick } from "react-icons/ti";
 import { RxCross2 } from "react-icons/rx";
 
@@ -37,11 +38,23 @@ export default function FaTransitionsInput({
         setOption={handleChange("inputSymbol")}
         selected={inputSymbol}
       />
-      <SingleSelectionDropDown
+      {/* <SingleSelectionDropDown
         className="h-[40px]"
         selectedIcon={TiTick}
         option={faState}
         setOption={handleChange("nextState")}
+        selected={nextState}
+      />
+      <MultiSelectDropdown
+        className="h-[40px]"
+        selectedIcon={TiTick}
+        option={faState}
+      /> */}
+      <MultiSelectDropdown
+        className="h-[40px]"
+        selectedIcon={TiTick}
+        option={faState}
+        sendResult={handleChange("nextState")}
         selected={nextState}
       />
       <RxCross2

@@ -1,10 +1,4 @@
-import {
-  addFA,
-  getAllFA,
-  getFAById,
-  updateFA,
-  deleteFA,
-} from "../models/faModel.js";
+import { addFA, getAllFA, getFAById, deleteFA } from "../models/FaModel.js";
 import { transformId } from "../utils/idGenerator.js";
 
 // Function to add a new FA
@@ -43,7 +37,9 @@ export const getAllFAs = async (_req, res) => {
 export const getFA = async (req, res) => {
   try {
     const fa = await getFAById(req.params.id);
-    if (!fa) return res.status(404).json({ error: "FA not found" });
+    if (!fa) {
+      return res.status(404).json({ error: "FA not found" });
+    }
     res.json(fa);
   } catch (err) {
     console.error("getFA error:", err);

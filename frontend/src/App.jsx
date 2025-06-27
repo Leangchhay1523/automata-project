@@ -20,17 +20,21 @@ function App() {
 
   return (
     <div className="bg-gray-50 w-full flex flex-col justify-center items-center min-h-screen p-4 gap-4">
-      <h1 className="text-3xl font-bold text-center bg-gray">
-        Finite Automata Analyzer
-      </h1>
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-3xl font-bold text-center bg-gray">
+          Finite Automata App
+        </h1>
+        <p className="text-(--color-gray) text-[18px]">
+          Create and Manage your FA
+        </p>
+      </div>
 
       {/* Creation Form */}
       <FaFormLayout />
 
       {/* FA History */}
       <div className="w-full max-w-[95vw] sm:max-w-[90vw] lg:max-w-8/10">
-        <h2 className="text-xl font-semibold">Your Finite Automata</h2>
-        <FAHistoryLayout history={dummyData} />
+        <FAHistoryLayout />
       </div>
 
       {/* Operations Section */}

@@ -53,7 +53,7 @@ export default function SingleSelectionDropDown({
         <span>
           {showFA
             ? selected
-              ? `${faType} - ${findSelectedOption(selected).name}`
+              ? `(${faType}) ${findSelectedOption(selected).name}`
               : placeholder
             : selected || placeholder}
         </span>
@@ -77,7 +77,7 @@ export default function SingleSelectionDropDown({
                       <SelectedIcon size={14} />
                     </span>
                   )}
-                  {`${faType} - ${option.name}`}
+                  {`(${faType}) ${option.name}`}
                 </div>
               ))
             ) : (

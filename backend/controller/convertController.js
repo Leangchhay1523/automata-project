@@ -6,7 +6,7 @@ import {
   deleteConvert as removeConvert,
 } from "../models/convertModel.js";
 import { transformId } from "../utils/idGenerator.js";
-import nfaToDfa from "../logic/nfaTodfa.js";
+import nfaToDfa from "../logic/nfaToDfaLogic.js";
 
 // Function to create a new FA as converted
 export const createConvert = async (req, res) => {
@@ -44,6 +44,8 @@ export const createConvert = async (req, res) => {
     // Persist
     const record = {
       id: newId,
+      type: "DFA",
+      name: original.name || "",
       convertedFrom: id,
       convert: converted,
       ...dfaData,
