@@ -41,7 +41,6 @@ export default function nfaToDfa(fa) {
 
   // Initialize DFA structure
   const dfa = {
-    name: `DFA_${name}`,
     type: "DFA",
     states: [],
     alphabet: alphabet.filter((symbol) => symbol !== "ε"),

@@ -1,100 +1,41 @@
 [
   {
-    "id": "D2653B2",
-    "name": "DFA_String contains aba",
-    "convertedFrom": "A2653B2",
-    "convert": true,
+    "id": "D2D0KFN",
     "type": "DFA",
+    "name": "String contains 01 (Converted)",
+    "convertedFrom": "A2D0KFN",
     "states": [
       "q'0",
       "q'1",
       "q'2",
-      "q'3",
-      "q'4",
-      "q'5"
+      "q'3"
     ],
     "alphabet": [
-      "a",
-      "b"
+      "0",
+      "1"
     ],
     "transitions": {
       "q'0": {
-        "a": "q'1",
-        "b": "q'0"
+        "0": "q'1",
+        "1": "q'0"
       },
       "q'1": {
-        "a": "q'1",
-        "b": "q'2"
+        "0": "q'1",
+        "1": "q'2"
       },
       "q'2": {
-        "a": "q'3",
-        "b": "q'0"
+        "0": "q'3",
+        "1": "q'2"
       },
       "q'3": {
-        "a": "q'3",
-        "b": "q'4"
-      },
-      "q'4": {
-        "a": "q'3",
-        "b": "q'5"
-      },
-      "q'5": {
-        "a": "q'3",
-        "b": "q'5"
+        "0": "q'3",
+        "1": "q'2"
       }
     },
     "startState": "q'0",
     "acceptStates": [
-      "q'3",
-      "q'4",
-      "q'5"
+      "q'2",
+      "q'3"
     ]
-  },
-  {
-    "id": "DQ27DXI",
-    "name": "String contains no bb",
-    "convertedFrom": "AQ27DXI",
-    "convert": false,
-    "states": [
-      "q0",
-      "q1",
-      "q2"
-    ],
-    "alphabet": [
-      "a",
-      "b"
-    ],
-    "transitions": {
-      "q0": {
-        "a": [
-          "q0"
-        ],
-        "b": [
-          "q1"
-        ]
-      },
-      "q1": {
-        "a": [
-          "q0"
-        ],
-        "b": [
-          "q2"
-        ]
-      },
-      "q2": {
-        "a": [
-          "q2"
-        ],
-        "b": [
-          "q2"
-        ]
-      }
-    },
-    "startState": "q0",
-    "acceptStates": [
-      "q0",
-      "q1"
-    ],
-    "type": "DFA"
   }
 ]

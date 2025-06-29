@@ -1,4 +1,4 @@
-import { getFAById, updateFA } from "../models/faModel.js";
+import { getFAById, updateFA } from "../models/FaModel.js";
 import {
   addConvert,
   getConvertById,
@@ -23,16 +23,8 @@ export const createConvert = async (req, res) => {
 
     // Decide if we even need to convert
     let dfaData;
-    let converted = false;
-    if (original.type === "NFA") {
-      dfaData = nfaToDfa(original);
-      converted = true;
-    } else {
-      // Already a DFA
-      const { states, alphabet, transitions, startState, acceptStates } =
-        original;
-      dfaData = { states, alphabet, transitions, startState, acceptStates };
-    }
+    dfaData = nfaToDfa(original);
+    let converted = true;
 
     // Avoid duplicates
     const newId = transformId("D", id);
@@ -47,9 +39,8 @@ export const createConvert = async (req, res) => {
     const record = {
       id: newId,
       type: "DFA",
-      name: original.name || "",
+      name: `${original.name} (Converted)`,
       convertedFrom: id,
-      convert: converted,
       ...dfaData,
     };
     await addConvert(record);

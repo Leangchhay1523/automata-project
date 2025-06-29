@@ -10,6 +10,9 @@
     - [Project Structure](#project-structure)
   - [Getting Started](#getting-started)
     - [Installation and Setup](#installation-and-setup)
+    - [Run the Application](#run-the-application)
+      - [Option 1: One-Click Execution](#option-1-one-click-execution)
+      - [Option 2: Manual Setup](#option-2-manual-setup)
   - [Demo](#demo)
   - [Contributors](#contributors)
 
@@ -100,24 +103,40 @@ fa-analyzer/
 
 ### Installation and Setup
 
-1. Clone the repository
+Clone the repository
 
 ```bash
 git clone https://github.com/Leangchhay1523/automata-project
 ```
 
-2. Install and run backend server
+### Run the Application
+
+#### Option 1: One-Click Execution
+
+**For Windows:**
 
 ```bash
+# Double-click exec.bat or run in Command Prompt:
+exec.bat
+```
+
+**For Linux/Mac:**
+
+```bash
+# Make executable and run:
+chmod +x exec.sh
+./exec.sh
+```
+
+#### Option 2: Manual Setup
+
+```bash
+# Start Backend
 cd backend
 npm install
 npm run dev
 
-```
-
-3. Install and run frontend
-
-```bash
+# Start Frontend
 cd frontend
 npm install
 npm run dev

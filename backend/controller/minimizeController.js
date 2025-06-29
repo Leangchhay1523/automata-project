@@ -1,5 +1,5 @@
 import { getFAById, updateFA } from "../models/FaModel.js";
-import { getConvertById, addConvert } from "../models/convertModel.js";
+import { getConvertById } from "../models/convertModel.js";
 import {
   addMin,
   getMinById,
@@ -7,7 +7,6 @@ import {
   deleteMin as removeMin,
 } from "../models/minimizeModel.js";
 import { transformId } from "../utils/idGenerator.js";
-import nfaToDfa from "../logic/nfaToDfaLogic.js";
 import minimizeDfa from "../logic/minimizeDfaLogic.js";
 
 // Function to create a new DFA as minimized DFA
@@ -18,36 +17,20 @@ export const createMinimize = async (req, res) => {
   }
 
   try {
-    const dfaId = transformId("D", id);
-    let dfa = await getConvertById(dfaId);
+    let dfa = await getFAById(id);
     let converted = false;
 
+    // If DFA not found in FA storage, check converted DFA storage
     if (!dfa) {
-      const original = await getFAById(id);
-      if (!original) {
-        return res.status(404).json({ error: "FA not found" });
-      }
-      let dfaData;
-      if (original.type === "NFA") {
-        dfaData = nfaToDfa(original);
+      dfa = await getConvertById(id);
+      if (dfa) {
         converted = true;
-      } else {
-        const { states, alphabet, transitions, startState, acceptStates } =
-          original;
-        dfaData = { states, alphabet, transitions, startState, acceptStates };
       }
-      dfa = {
-        id: dfaId,
-        name: original.name,
-        convertedFrom: id,
-        convert: converted,
-        ...dfaData,
-      };
-
-      await addConvert(dfa);
     }
 
-    await updateFA(id, { convert: converted });
+    if (!dfa) {
+      return res.status(404).json({ error: "DFA not found" });
+    }
 
     const minId = transformId("M", id);
 
@@ -56,11 +39,12 @@ export const createMinimize = async (req, res) => {
       await updateFA(id, { minimize: true });
       return res.json({ ...existing, convert: converted, minimize: true });
     }
+
     const minData = minimizeDfa(dfa);
     const record = {
       id: minId,
-      name: dfa.name,
-      minimizedFrom: dfa.id,
+      name: `${dfa.name} (Minimized)`,
+      minimizedFrom: id,
       ...minData,
     };
     await addMin(record);

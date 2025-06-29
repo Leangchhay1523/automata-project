@@ -1,50 +1,12 @@
 [
   {
-    "id": "M2653B2",
-    "name": "String contains aba",
-    "minimizedFrom": "D2653B2",
+    "id": "MH9R6QQ",
+    "name": "String ends with ab (Minimized)",
+    "minimizedFrom": "AH9R6QQ",
     "type": "DFA",
     "states": [
       "Q1",
       "Q0",
-      "Q2",
-      "Q3"
-    ],
-    "alphabet": [
-      "a",
-      "b"
-    ],
-    "transitions": {
-      "Q1": {
-        "a": "Q1",
-        "b": "Q1"
-      },
-      "Q0": {
-        "a": "Q2",
-        "b": "Q0"
-      },
-      "Q2": {
-        "a": "Q2",
-        "b": "Q3"
-      },
-      "Q3": {
-        "a": "Q1",
-        "b": "Q0"
-      }
-    },
-    "startState": "Q0",
-    "acceptStates": [
-      "Q1"
-    ]
-  },
-  {
-    "id": "MQ27DXI",
-    "name": "String contains no bb",
-    "minimizedFrom": "DQ27DXI",
-    "type": "DFA",
-    "states": [
-      "Q0",
-      "Q1",
       "Q2"
     ],
     "alphabet": [
@@ -52,22 +14,21 @@
       "b"
     ],
     "transitions": {
-      "Q0": {
-        "a": "Q0",
-        "b": "Q1"
-      },
       "Q1": {
-        "a": "Q0",
-        "b": "Q2"
+        "a": "Q2",
+        "b": "Q0"
+      },
+      "Q0": {
+        "a": "Q2",
+        "b": "Q0"
       },
       "Q2": {
         "a": "Q2",
-        "b": "Q2"
+        "b": "Q1"
       }
     },
     "startState": "Q0",
     "acceptStates": [
-      "Q0",
       "Q1"
     ]
   }

@@ -1,9 +1,7 @@
-import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import fs from "fs/promises";
 import path from "path";
-import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,6 +37,6 @@ async function ensureDataDirs() {
 
   app.use((_, res) => res.status(404).json({ error: "Route not found" }));
 
-  const PORT = process.env.PORT;
+  const PORT = 3000;
   app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 })();

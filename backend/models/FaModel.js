@@ -44,7 +44,7 @@ export async function addFA(fa) {
 
 export async function getFAById(id) {
   const all = await readAll();
-  return all.find((f) => f.id === id) || null;
+  return all.find((f) => f.id === id);
 }
 
 export async function getAllFA() {

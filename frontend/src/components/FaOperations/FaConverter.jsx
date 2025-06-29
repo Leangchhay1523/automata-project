@@ -3,7 +3,7 @@ import { useState, useEffect, use } from "react";
 import SingleSelectionDropDown from "../common/SingleSelectionDropDown";
 import { TiTick } from "react-icons/ti";
 import Table from "../common/Table";
-import { getEveryFa, createMinimizedDFA, getFAById } from "@/api/api.js";
+import { getEveryFa, createConvertedDFA, getFAById } from "@/api/api.js";
 
 export default function FaConverter() {
   const [inputError, setInputError] = useState(false);
@@ -33,7 +33,7 @@ export default function FaConverter() {
 
   const convertNFA = async (nfaId) => {
     try {
-      const response = await createMinimizedDFA(nfaId);
+      const response = await createConvertedDFA(nfaId);
       console.log("Converted DFA Response:", response);
       setConvertedDFA(response);
     } catch (error) {
