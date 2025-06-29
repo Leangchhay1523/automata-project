@@ -36,6 +36,7 @@
     "acceptStates": [
       "q'2",
       "q'3"
-    ]
+    ],
+    "minimize": true
   }
 ]

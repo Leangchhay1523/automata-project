@@ -31,7 +31,8 @@ export default function FaMinimizer() {
 
   const getDfaDataById = async (id) => {
     try {
-      const faData = await getFAById(id);
+      const allFa = await getEveryFa();
+      const faData = allFa.find((fa) => fa.id === id);
       console.log("Fetched FA Data:", faData);
       setSelectedNFAData(faData);
     } catch (error) {

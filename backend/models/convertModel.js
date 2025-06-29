@@ -43,6 +43,17 @@ export async function getConvertById(id) {
   return all.find((r) => r.id === id) || null;
 }
 
+export async function updateConvert(id, updates) {
+  const all = await readAll();
+  const idx = all.findIndex((f) => f.id === id);
+  if (idx === -1) {
+    throw new Error(`FA ${id} not found`);
+  }
+  all[idx] = { ...all[idx], ...updates };
+  await writeAll(all);
+  return all[idx];
+}
+
 export async function getAllConvert() {
   return await readAll();
 }

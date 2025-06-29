@@ -1,5 +1,5 @@
 import { getFAById, updateFA } from "../models/FaModel.js";
-import { getConvertById } from "../models/convertModel.js";
+import { getConvertById, updateConvert } from "../models/convertModel.js";
 import {
   addMin,
   getMinById,
@@ -17,15 +17,19 @@ export const createMinimize = async (req, res) => {
   }
 
   try {
-    let dfa = await getFAById(id);
+    let dfa = null;
     let converted = false;
+    let faFound = true;
 
-    // If DFA not found in FA storage, check converted DFA storage
+    // Try to get original FA first
+    dfa = await getFAById(id);
+    console.log("dfa", dfa);
+
     if (!dfa) {
+      console.log(id);
       dfa = await getConvertById(id);
-      if (dfa) {
-        converted = true;
-      }
+      console.log("DFA", dfa);
+      faFound = false;
     }
 
     if (!dfa) {
@@ -48,7 +52,13 @@ export const createMinimize = async (req, res) => {
       ...minData,
     };
     await addMin(record);
-    await updateFA(id, { minimize: true });
+    console.log(faFound);
+    if (faFound) {
+      await updateFA(id, { minimize: true });
+    } else {
+      const convertId = transformId("D", id);
+      await updateConvert(convertId, { minimize: true });
+    }
 
     res.status(201).json(record);
   } catch (err) {

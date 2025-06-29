@@ -4,15 +4,8 @@
     "name": "String ends with ab (Minimized)",
     "minimizedFrom": "AH9R6QQ",
     "type": "DFA",
-    "states": [
-      "Q1",
-      "Q0",
-      "Q2"
-    ],
-    "alphabet": [
-      "a",
-      "b"
-    ],
+    "states": ["Q1", "Q0", "Q2"],
+    "alphabet": ["a", "b"],
     "transitions": {
       "Q1": {
         "a": "Q2",
@@ -28,8 +21,6 @@
       }
     },
     "startState": "Q0",
-    "acceptStates": [
-      "Q1"
-    ]
+    "acceptStates": ["Q1"]
   }
 ]
