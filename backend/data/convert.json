@@ -1,52 +1,5 @@
 [
   {
-    "id": "DQ27DXI",
-    "name": "String contains no bb",
-    "convertedFrom": "AQ27DXI",
-    "convert": false,
-    "states": [
-      "q0",
-      "q1",
-      "q2"
-    ],
-    "alphabet": [
-      "a",
-      "b"
-    ],
-    "transitions": {
-      "q0": {
-        "a": [
-          "q0"
-        ],
-        "b": [
-          "q1"
-        ]
-      },
-      "q1": {
-        "a": [
-          "q0"
-        ],
-        "b": [
-          "q2"
-        ]
-      },
-      "q2": {
-        "a": [
-          "q2"
-        ],
-        "b": [
-          "q2"
-        ]
-      }
-    },
-    "startState": "q0",
-    "acceptStates": [
-      "q0",
-      "q1"
-    ],
-    "type": "DFA"
-  },
-  {
     "id": "D2653B2",
     "name": "DFA_String contains aba",
     "convertedFrom": "A2653B2",
@@ -96,5 +49,52 @@
       "q'4",
       "q'5"
     ]
+  },
+  {
+    "id": "DQ27DXI",
+    "name": "String contains no bb",
+    "convertedFrom": "AQ27DXI",
+    "convert": false,
+    "states": [
+      "q0",
+      "q1",
+      "q2"
+    ],
+    "alphabet": [
+      "a",
+      "b"
+    ],
+    "transitions": {
+      "q0": {
+        "a": [
+          "q0"
+        ],
+        "b": [
+          "q1"
+        ]
+      },
+      "q1": {
+        "a": [
+          "q0"
+        ],
+        "b": [
+          "q2"
+        ]
+      },
+      "q2": {
+        "a": [
+          "q2"
+        ],
+        "b": [
+          "q2"
+        ]
+      }
+    },
+    "startState": "q0",
+    "acceptStates": [
+      "q0",
+      "q1"
+    ],
+    "type": "DFA"
   }
 ]

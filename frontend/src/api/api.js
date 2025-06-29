@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:3000"; // Adjust the base URL as needed
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 // =============== Input FA ===============
 // Create FA
 export const createFA = async (fa) => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/fa`, fa);
+    const response = await axios.post(`${API_URL}/api/fa`, fa);
     return response.data;
   } catch (error) {
     console.error("Error creating FA:", error);
@@ -16,7 +16,7 @@ export const createFA = async (fa) => {
 // Get all FAs
 export const getAllFAs = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/fa`);
+    const response = await axios.get(`${API_URL}/api/fa`);
     return response.data;
   } catch (error) {
     console.error("Error fetching FAs:", error);
@@ -26,7 +26,7 @@ export const getAllFAs = async () => {
 // Get FA by ID
 export const getFAById = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/fa/${id}`);
+    const response = await axios.get(`${API_URL}/api/fa/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching FA by ID:", error);
@@ -36,7 +36,7 @@ export const getFAById = async (id) => {
 // Delete FA by ID
 export const deleteFAById = async (id) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/api/fa/${id}`);
+    const response = await axios.delete(`${API_URL}/api/fa/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting FA by ID:", error);
@@ -48,7 +48,7 @@ export const deleteFAById = async (id) => {
 // Create Minimized DFA
 export const createMinimizedDFA = async (id) => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/minimize`, { id });
+    const response = await axios.post(`${API_URL}/api/minimize`, { id });
     return response.data;
   } catch (error) {
     console.error("Error creating minimized DFA:", error);
@@ -59,7 +59,7 @@ export const createMinimizedDFA = async (id) => {
 // Get All Minimized DFAs
 export const getAllMinimizedDFAs = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/minimize`);
+    const response = await axios.get(`${API_URL}/api/minimize`);
     return response.data;
   } catch (error) {
     console.error("Error fetching minimized DFAs:", error);
@@ -69,7 +69,7 @@ export const getAllMinimizedDFAs = async () => {
 // Get Minimized DFA by ID
 export const getMinimizedDFAById = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/minimize/${id}`);
+    const response = await axios.get(`${API_URL}/api/minimize/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching minimized DFA by ID:", error);
@@ -79,7 +79,7 @@ export const getMinimizedDFAById = async (id) => {
 // Delete Minimized DFA by ID
 export const deleteMinimizedDFAById = async (id) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/api/minimize/${id}`);
+    const response = await axios.delete(`${API_URL}/api/minimize/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting minimized DFA by ID:", error);
@@ -91,7 +91,7 @@ export const deleteMinimizedDFAById = async (id) => {
 // Create Converted DFA
 export const createConvertedDFA = async (id) => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/convert`, { id });
+    const response = await axios.post(`${API_URL}/api/convert`, { id });
     return response.data;
   } catch (error) {
     console.error("Error creating converted DFA:", error);
@@ -101,7 +101,7 @@ export const createConvertedDFA = async (id) => {
 // Get All Converted DFA
 export const getAllConvertedDFAs = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/convert`);
+    const response = await axios.get(`${API_URL}/api/convert`);
     return response.data;
   } catch (error) {
     console.error("Error fetching converted DFAs:", error);
@@ -111,7 +111,7 @@ export const getAllConvertedDFAs = async () => {
 // Get Converted DFA by ID
 export const getConvertedDFAById = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/convert/${id}`);
+    const response = await axios.get(`${API_URL}/api/convert/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching converted DFA by ID:", error);
@@ -121,7 +121,7 @@ export const getConvertedDFAById = async (id) => {
 // Delete Converted DFA by ID
 export const deleteConvertedDFAById = async (id) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/api/convert/${id}`);
+    const response = await axios.delete(`${API_URL}/api/convert/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting converted DFA by ID:", error);
@@ -131,7 +131,7 @@ export const deleteConvertedDFAById = async (id) => {
 // Test String
 export const testString = async (id, input) => {
   try {
-    const response = await axios.post(`${BASE_URL}/api/fa/test`, { id, input });
+    const response = await axios.post(`${API_URL}/api/fa/test`, { id, input });
     return response.data;
   } catch (error) {
     console.error("Error testing string:", error);

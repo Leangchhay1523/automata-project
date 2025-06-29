@@ -1,4 +1,4 @@
-import { getFAById, updateFA } from "../models/faModel.js";
+import { getFAById, updateFA } from "../models/FaModel.js";
 import { getConvertById, addConvert } from "../models/convertModel.js";
 import {
   addMin,
@@ -22,13 +22,11 @@ export const createMinimize = async (req, res) => {
     let dfa = await getConvertById(dfaId);
     let converted = false;
 
-    const original = await getFAById(id);
-
     if (!dfa) {
+      const original = await getFAById(id);
       if (!original) {
         return res.status(404).json({ error: "FA not found" });
       }
-
       let dfaData;
       if (original.type === "NFA") {
         dfaData = nfaToDfa(original);
@@ -61,7 +59,7 @@ export const createMinimize = async (req, res) => {
     const minData = minimizeDfa(dfa);
     const record = {
       id: minId,
-      name: original.name,
+      name: dfa.name,
       minimizedFrom: dfa.id,
       ...minData,
     };

@@ -2,9 +2,11 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "echo 'Build completed - No build step required for Node.js backend'",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +17,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "i": "^0.3.7",
     "msgpack-lite": "^0.1.26"
   },
   "devDependencies": {

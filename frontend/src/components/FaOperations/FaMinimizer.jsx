@@ -91,7 +91,7 @@ export default function FaMinimizer() {
         <div className="flex flex-col gap-3">
           <p className="font-raleway-bold w-full text-[20px]">Result</p>
           <div>
-            <p>Original DFA: {selectedNFAData.name}</p>
+            <p>Original DFA: {selectedNFAData && selectedNFAData.name}</p>
             {selectedNFAData && <Table fa={selectedNFAData} />}
           </div>
           <div>
